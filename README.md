@@ -1,2 +1,2 @@
-# tcc-time
- - Antes de dar git add, de git pull
+# TimeZen
+ - Antes de fazer qualquer coisa de git pull :rage:
