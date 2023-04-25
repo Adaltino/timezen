@@ -18,11 +18,11 @@
         app:layout_constraintVertical_bias="0.136"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="startTimeCounter"
+        android:onClick="startStopAction"
         android:text="iniciar plano"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,9 +34,9 @@
 
     <TextView
         android:id="@+id/countTime"
+        android:text="00:00:00"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:textSize="32sp"
@@ -63,13 +63,12 @@
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
-        android:text="cancelararareriroru"
-        android:onClick="stopTimeCounter"
+        android:onClick="resetTimer"
+        android:text="resetarianismos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/start_button" />
 
     <TextView
         android:id="@+id/planStage"
