@@ -12,7 +12,7 @@ class Task(
 
     private val translator = Translator()
     private var timePassed: Long = 0
-    private var totalSessions = pomodoroTimer.getTasks()
+    private val totalSessions = pomodoroTimer.getTasks()
     private var remainingSessions = pomodoroTimer.getTasks()
     private val initialWorkTime = pomodoroTimer.getWorkTime()
     private val initialBreakTime = pomodoroTimer.getBreakTime()
@@ -29,13 +29,11 @@ class Task(
                     return
                 }
                 decrementSession()
+                updateCounter(timeRemaining)
+            } else {
+                timePassed += 1000
+                updateCounter(timeRemaining)
             }
-
-            Log.d("task", "restando: $timeRemaining, " +
-                    "work: ${pomodoroTimer.isOnWorkStage}, session: $remainingSessions")
-
-            timePassed += 1000
-            updateCounter(timeRemaining)
         }
     }
 
