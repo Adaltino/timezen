@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="startStopAction"
         android:text="iniciar plano"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +50,7 @@
         android:id="@+id/planName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="plan's name"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/countTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -60,10 +59,9 @@
         app:layout_constraintVertical_bias="0.23" />
 
     <Button
-        android:id="@+id/cancel_button"
+        android:id="@+id/reset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="resetTimer"
         android:text="resetarianismos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +72,7 @@
         android:id="@+id/planStage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="plan's stage"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/countTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
