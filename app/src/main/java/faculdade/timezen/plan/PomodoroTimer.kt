@@ -10,25 +10,31 @@ class PomodoroTimer(
     private val tasks: Int
 ) {
     private val timer = Timer()
+    private lateinit var currentTask: Task
 
     var isRunning = false
     var isOnWorkStage = true
-
 
     fun startWorkTime(plan: Plan, pomodoroTextViews: PomodoroTextViews) {
         if (!isRunning) {
             isRunning = true
             pomodoroTextViews.planName.text = plan.name
-            timer.scheduleAtFixedRate(Task(this, pomodoroTextViews), 0, 1000)
+            currentTask = Task(this, pomodoroTextViews)
+            timer.scheduleAtFixedRate(currentTask, 0, 1000)
         }
     }
 
-    fun startBreakTime(plan: Plan, textView: TextView) {
-
+    fun resume() {
+        isRunning = true
     }
 
-    fun stopPomodoro() {
+    fun pause(){
         isRunning = false
+    }
+
+    fun stop() {
+        isRunning = false
+        currentTask.cancel()
     }
 
     fun getWorkTime(): Long = workTime

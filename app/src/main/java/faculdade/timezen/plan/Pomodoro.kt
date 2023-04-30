@@ -12,4 +12,10 @@ class Pomodoro(
         plan.pomodoroTimer.startWorkTime(plan, textCountDown)
     }
 
+    fun pause() {
+        //TODO(this one should use DataStore)
+    }
+
+    fun stop() {}
+
 }
