@@ -14,61 +14,81 @@ class Task(
     private var timePassed: Long = 0
     private var totalSessions = pomodoroTimer.getTasks()
     private var remainingSessions = pomodoroTimer.getTasks()
+    private val initialWorkTime = pomodoroTimer.getWorkTime()
+    private val initialBreakTime = pomodoroTimer.getBreakTime()
     private var isNewSession = true
 
     override fun run() {
         if (pomodoroTimer.isRunning) {
-            val timeRemaining: Long
-            if (pomodoroTimer.isOnWorkStage) {
-                timeRemaining = pomodoroTimer.getWorkTime() - timePassed
-                try {
-                    pomodoroTextViews.planStage.text = "Work time!"
-                } catch (e: Exception) {
-                    Log.e("Exception", "$e")
-                }
-            } else {
-                timeRemaining = pomodoroTimer.getBreakTime() - timePassed
-                try {
-                    pomodoroTextViews.planStage.text = "Break time!"
-                } catch (e: Exception) {
-                    Log.e("Exception", "$e")
-                }
-            }
+            val timeRemaining: Long = getRemainingTime()
 
             if (timeHasEnded(timeRemaining)) {
-                pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
-                timePassed = 0
-
+                changePomodoroStage()
                 if (remainingSessions == 0) {
-                    pomodoroTimer.isRunning = false
-                    this.cancel()
-                    try {
-                        pomodoroTextViews.planStage.text = "Pomodoro finished!"
-                        pomodoroTextViews.counter.text = translator.timeStringFromLong(0)
-                    } catch (e: Exception) {
-                        Log.e("Exception", "$e")
-                    }
+                    resetVariables()
                     return
                 }
-
-                if (!isNewSession) {
-                    remainingSessions--
-                }
-                isNewSession = !isNewSession
+                decrementSession()
             }
 
             Log.d("task", "restando: $timeRemaining, " +
                     "work: ${pomodoroTimer.isOnWorkStage}, session: $remainingSessions")
 
             timePassed += 1000
-            try {
-                pomodoroTextViews.counter.text = translator.timeStringFromLong(timeRemaining)
-            } catch (e: Exception) {
-                Log.e("Exception","$e")
-            }
+            updateCounter(timeRemaining)
+        }
+    }
+
+    private fun getRemainingTime(): Long {
+        return if (pomodoroTimer.isOnWorkStage) {
+            updateStage("Work time!")
+            initialWorkTime - timePassed
+        } else {
+            updateStage("Break time!")
+            initialBreakTime - timePassed
+        }
+    }
+
+    private fun updateStage(s: String) {
+        try {
+            pomodoroTextViews.planStage.text = s
+        } catch (e: Exception) {
+            Log.e("Exception", "$e")
+        }
+    }
+
+    private fun updateCounter(timeRemaining: Long) {
+        try {
+            pomodoroTextViews.counter.text = translator.timeStringFromLong(timeRemaining)
+        } catch (e: Exception) {
+            Log.e("Exception","$e")
         }
     }
 
     private fun timeHasEnded(timeRemaining: Long): Boolean = timeRemaining <= 0
+
+    private fun resetVariables() {
+        pomodoroTimer.isRunning = false
+        pomodoroTimer.isOnWorkStage = true
+        this.cancel()
+        try {
+            pomodoroTextViews.planStage.text = "Pomodoro finished!"
+            pomodoroTextViews.counter.text = translator.timeStringFromLong(0)
+        } catch (e: Exception) {
+            Log.e("Exception", "$e")
+        }
+    }
+
+    private fun changePomodoroStage() {
+        pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
+        timePassed = 0
+    }
+
+    private fun decrementSession() {
+        if (!isNewSession) {
+            remainingSessions--
+        }
+        isNewSession = !isNewSession
+    }
 
 }
