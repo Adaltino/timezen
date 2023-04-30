@@ -12,7 +12,9 @@ class Task(
 
     private val translator = Translator()
     private var timePassed: Long = 0
+    private var totalSessions = pomodoroTimer.getTasks()
     private var remainingSessions = pomodoroTimer.getTasks()
+    private var isNewSession = true
 
     override fun run() {
         if (pomodoroTimer.isRunning) {
@@ -49,16 +51,20 @@ class Task(
                     return
                 }
 
-                remainingSessions--
+                if (!isNewSession) {
+                    remainingSessions--
+                }
+                isNewSession = !isNewSession
             }
 
-            Log.d("task", "restando: $timeRemaining, work: ${pomodoroTimer.isOnWorkStage}, session: $remainingSessions")
+            Log.d("task", "restando: $timeRemaining, " +
+                    "work: ${pomodoroTimer.isOnWorkStage}, session: $remainingSessions")
 
             timePassed += 1000
             try {
                 pomodoroTextViews.counter.text = translator.timeStringFromLong(timeRemaining)
             } catch (e: Exception) {
-                Log.e("ERROR","$e")
+                Log.e("Exception","$e")
             }
         }
     }
