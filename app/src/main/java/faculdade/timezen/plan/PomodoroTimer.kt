@@ -1,6 +1,5 @@
 package faculdade.timezen.plan
 
-import android.widget.TextView
 import faculdade.timezen.utils.PomodoroTextViews
 import java.util.Timer
 
@@ -15,12 +14,14 @@ class PomodoroTimer(
     var isRunning = false
     var isOnWorkStage = true
 
-    fun startWorkTime(plan: Plan, pomodoroTextViews: PomodoroTextViews) {
+    fun start(plan: Plan, pomodoroTextViews: PomodoroTextViews) {
         if (!isRunning) {
             isRunning = true
-            pomodoroTextViews.planName.text = plan.name
+            pomodoroTextViews.planName.text = plan.name()
             currentTask = Task(this, pomodoroTextViews)
             timer.scheduleAtFixedRate(currentTask, 0, 1000)
+        } else {
+            resume()
         }
     }
 
@@ -28,7 +29,7 @@ class PomodoroTimer(
         isRunning = true
     }
 
-    fun pause(){
+    fun pause() {
         isRunning = false
     }
 

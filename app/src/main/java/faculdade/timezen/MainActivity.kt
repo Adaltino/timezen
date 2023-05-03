@@ -10,16 +10,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.android.material.snackbar.Snackbar
-import faculdade.timezen.plan.PomodoroTimer
 import faculdade.timezen.plan.Plan
 import faculdade.timezen.plan.Pomodoro
+import faculdade.timezen.plan.PomodoroTimer
 import faculdade.timezen.utils.PomodoroTextViews
 import java.util.Timer
 
 class MainActivity : Activity() {
     // https://developer.android.com/topic/libraries/architecture/datastore
     private val Context.dataStore: DataStore<Preferences>
-        by preferencesDataStore(name = "prefs")
+            by preferencesDataStore(name = "prefs")
 
     private lateinit var pomodoro: Pomodoro
     private val timer = Timer()
@@ -37,13 +37,14 @@ class MainActivity : Activity() {
         val counterTextView: TextView = findViewById(R.id.countTime)
         val planNameTextView: TextView = findViewById(R.id.planName)
         val planStageTextView: TextView = findViewById(R.id.planStage)
-        pomodoro = Pomodoro(plan, PomodoroTextViews(counterTextView, planNameTextView, planStageTextView))
+        pomodoro =
+            Pomodoro(plan, PomodoroTextViews(counterTextView, planNameTextView, planStageTextView))
 
         findViewById<Button>(R.id.start_button)
             .setOnClickListener {
                 Log.d("Button", "start pomodoro button clicked")
                 Snackbar.make(it, "pomodoro iniciado", 2000).show()
-                pomodoro.startPomodoro()
+                pomodoro.start()
             }
 
         findViewById<Button>(R.id.reset_button)

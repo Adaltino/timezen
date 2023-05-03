@@ -1,6 +1,5 @@
 package faculdade.timezen.plan
 
-import android.widget.TextView
 import faculdade.timezen.utils.PomodoroTextViews
 
 class Pomodoro(
@@ -8,14 +7,22 @@ class Pomodoro(
     private val textCountDown: PomodoroTextViews,
 ) {
 
-    fun startPomodoro() {
-        plan.pomodoroTimer.startWorkTime(plan, textCountDown)
+    fun start() {
+        plan.pomodoroTimer().start(plan, textCountDown)
+    }
+
+    fun resume() {
+        plan.pomodoroTimer().resume()
     }
 
     fun pause() {
-        //TODO(this one should use DataStore)
+        //TODO(this one should use DataStore...?)
+        plan.pomodoroTimer().pause()
     }
 
-    fun stop() {}
+    fun stop() {
+        plan.pomodoroTimer().stop()
+    }
 
+    fun plan(): Plan = plan
 }

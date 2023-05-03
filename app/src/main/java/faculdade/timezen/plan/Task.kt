@@ -8,7 +8,7 @@ import java.util.TimerTask
 class Task(
     private val pomodoroTimer: PomodoroTimer,
     private val pomodoroTextViews: PomodoroTextViews,
-): TimerTask() {
+) : TimerTask() {
 
     private val translator = Translator()
     private var timePassed: Long = 0
@@ -26,6 +26,7 @@ class Task(
                 changePomodoroStage()
                 if (remainingSessions == 0) {
                     resetVariables()
+                    endTimer()
                     return
                 }
                 decrementSession()
@@ -59,7 +60,7 @@ class Task(
         try {
             pomodoroTextViews.counter.text = translator.timeStringFromLong(timeRemaining)
         } catch (e: Exception) {
-            Log.e("Exception","$e")
+            Log.e("Exception", "$e")
         }
     }
 
@@ -68,13 +69,16 @@ class Task(
     private fun resetVariables() {
         pomodoroTimer.isRunning = false
         pomodoroTimer.isOnWorkStage = true
-        this.cancel()
         try {
             pomodoroTextViews.planStage.text = "Pomodoro finished!"
             pomodoroTextViews.counter.text = translator.timeStringFromLong(0)
         } catch (e: Exception) {
             Log.e("Exception", "$e")
         }
+    }
+
+    private fun endTimer() {
+        this.cancel()
     }
 
     private fun changePomodoroStage() {
