@@ -1,12 +1,12 @@
 package faculdade.timezen.plan
 
-import faculdade.timezen.utils.PomodoroTextViews
+import faculdade.timezen.utils.InfoManipulator
 import java.util.Timer
 
 class PomodoroTimer(
-    private val workTime: Long,
-    private val breakTime: Long,
-    private val tasks: Int
+    val workTime: Long,
+    val breakTime: Long,
+    val tasks: Int
 ) {
     private val timer = Timer()
     private lateinit var currentTask: Task
@@ -14,11 +14,11 @@ class PomodoroTimer(
     var isRunning = false
     var isOnWorkStage = true
 
-    fun start(plan: Plan, pomodoroTextViews: PomodoroTextViews) {
+    fun start(plan: Plan, infoManipulator: InfoManipulator) {
         if (!isRunning) {
             isRunning = true
-            pomodoroTextViews.planName.text = plan.name()
-            currentTask = Task(this, pomodoroTextViews)
+            infoManipulator.pomodoroTextViews.planName.text = plan.name()
+            currentTask = Task(this, infoManipulator)
             timer.scheduleAtFixedRate(currentTask, 0, 1000)
         } else {
             resume()
@@ -37,9 +37,4 @@ class PomodoroTimer(
         isRunning = false
         currentTask.cancel()
     }
-
-    fun getWorkTime(): Long = workTime
-    fun getBreakTime(): Long = breakTime
-    fun getTasks(): Int = tasks
-
 }

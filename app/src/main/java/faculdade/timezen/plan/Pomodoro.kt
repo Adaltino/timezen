@@ -1,14 +1,14 @@
 package faculdade.timezen.plan
 
-import faculdade.timezen.utils.PomodoroTextViews
+import faculdade.timezen.utils.InfoManipulator
 
 class Pomodoro(
     private var plan: Plan,
-    private val textCountDown: PomodoroTextViews,
+    private val infoManipulator: InfoManipulator,
 ) {
 
     fun start() {
-        plan.pomodoroTimer().start(plan, textCountDown)
+        plan.pomodoroTimer().start(plan, infoManipulator)
     }
 
     fun resume() {

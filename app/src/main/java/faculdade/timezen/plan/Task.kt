@@ -1,40 +1,41 @@
 package faculdade.timezen.plan
 
-import android.util.Log
-import faculdade.timezen.utils.PomodoroTextViews
+import faculdade.timezen.utils.InfoManipulator
+import faculdade.timezen.utils.Text
 import faculdade.timezen.utils.Translator
 import java.util.TimerTask
 
 class Task(
     private val pomodoroTimer: PomodoroTimer,
-    private val pomodoroTextViews: PomodoroTextViews,
+    private val infoMan: InfoManipulator,
 ) : TimerTask() {
 
+    private val ONE_SECOND = 1000
     private val translator = Translator()
+
     private var timePassed: Long = 0
-    private val totalSessions = pomodoroTimer.getTasks()
-    private var remainingSessions = pomodoroTimer.getTasks()
-    private val initialWorkTime = pomodoroTimer.getWorkTime()
-    private val initialBreakTime = pomodoroTimer.getBreakTime()
-    private var isNewSession = true
+    private var remainingSessions = pomodoroTimer.tasks
+    private val initialWorkTime = pomodoroTimer.workTime
+    private val initialBreakTime = pomodoroTimer.breakTime
+    private var isWorkSession = true
 
     override fun run() {
         if (pomodoroTimer.isRunning) {
             val timeRemaining: Long = getRemainingTime()
 
-            if (timeHasEnded(timeRemaining)) {
-                changePomodoroStage()
+            if (!timeHasEnded(timeRemaining)) {
+                timePassed += ONE_SECOND
+            } else {
+                changeStage()
                 if (remainingSessions == 0) {
                     resetVariables()
                     endTimer()
                     return
                 }
-                decrementSession()
-                updateCounter(timeRemaining)
-            } else {
-                timePassed += 1000
-                updateCounter(timeRemaining)
+                changeSession()
             }
+
+            updateCounter(timeRemaining)
         }
     }
 
@@ -49,19 +50,12 @@ class Task(
     }
 
     private fun updateStage(s: String) {
-        try {
-            pomodoroTextViews.planStage.text = s
-        } catch (e: Exception) {
-            Log.e("Exception", "$e")
-        }
+        infoMan.setText(Text.TEXT_VIEW_PLAN_STAGE.ordinal, s)
     }
 
     private fun updateCounter(timeRemaining: Long) {
-        try {
-            pomodoroTextViews.counter.text = translator.timeStringFromLong(timeRemaining)
-        } catch (e: Exception) {
-            Log.e("Exception", "$e")
-        }
+        val time = translator.timeStringFromLong(timeRemaining)
+        infoMan.setText(Text.TEXT_VIEW_COUNTER.ordinal, time)
     }
 
     private fun timeHasEnded(timeRemaining: Long): Boolean = timeRemaining <= 0
@@ -69,28 +63,32 @@ class Task(
     private fun resetVariables() {
         pomodoroTimer.isRunning = false
         pomodoroTimer.isOnWorkStage = true
-        try {
-            pomodoroTextViews.planStage.text = "Pomodoro finished!"
-            pomodoroTextViews.counter.text = translator.timeStringFromLong(0)
-        } catch (e: Exception) {
-            Log.e("Exception", "$e")
-        }
+        val time = translator.timeStringFromLong(0)
+        infoMan.setText(Text.TEXT_VIEW_PLAN_STAGE.ordinal, "Pomodoro finished!")
+        infoMan.setText(Text.TEXT_VIEW_COUNTER.ordinal, time)
     }
 
     private fun endTimer() {
         this.cancel()
     }
 
-    private fun changePomodoroStage() {
+    private fun changeStage() {
         pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
         timePassed = 0
     }
 
-    private fun decrementSession() {
-        if (!isNewSession) {
-            remainingSessions--
-        }
-        isNewSession = !isNewSession
+    private fun changeSession() {
+        decrementSession()
+        invertSessionType()
     }
 
+    private fun decrementSession() {
+        if (!isWorkSession) {
+            remainingSessions--
+        }
+    }
+
+    private fun invertSessionType() {
+        isWorkSession = !isWorkSession
+    }
 }
