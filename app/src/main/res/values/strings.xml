@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TimeZen</string>
+    <string name="session_work">Work time!</string>
+    <string name="session_break">Break time!</string>
 </resources>
