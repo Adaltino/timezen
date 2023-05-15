@@ -1,4 +1,4 @@
-package faculdade.timezen.plan
+package faculdade.timezen.planModel
 
 class Plan(
     private var name: String,
