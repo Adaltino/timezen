@@ -1,4 +1,4 @@
-package faculdade.timezen.plan
+package faculdade.timezen.planModel
 
 import faculdade.timezen.utils.InfoManipulator
 
