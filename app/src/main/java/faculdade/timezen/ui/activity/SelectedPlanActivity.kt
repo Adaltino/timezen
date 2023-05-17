@@ -13,7 +13,7 @@ import faculdade.timezen.R
 import faculdade.timezen.planModel.Plan
 import faculdade.timezen.planModel.Pomodoro
 import faculdade.timezen.planModel.PomodoroTimer
-import faculdade.timezen.ui.activity.SelectedPlanActivity.Companion.dataStore
+//import faculdade.timezen.ui.activity.SelectedPlanActivity.Companion.dataStore
 import faculdade.timezen.utils.InfoManipulator
 import faculdade.timezen.utils.PomodoroTextViews
 import java.util.Timer
@@ -22,7 +22,7 @@ import java.util.prefs.Preferences
 class SelectedPlanActivity : AppCompatActivity() {
     companion object {
         // https://developer.android.com/topic/libraries/architecture/datastore
-        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "prefs")
+//        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "prefs")
     }
 
     private lateinit var pomodoro: Pomodoro
@@ -43,15 +43,15 @@ class SelectedPlanActivity : AppCompatActivity() {
         val planStageTextView: TextView = findViewById(R.id.planStage)
         val pomodoroTextViews =
             PomodoroTextViews(counterTextView, planNameTextView, planStageTextView)
-        pomodoro =
-            Pomodoro(plan, InfoManipulator(pomodoroTextViews, dataStore))
+//        pomodoro =
+//            Pomodoro(plan, InfoManipulator(pomodoroTextViews, dataStore))
 
 
         findViewById<Button>(R.id.start_button)
             .setOnClickListener {
                 Log.d("Button", "start pomodoro button clicked")
                 Snackbar.make(it, "pomodoro iniciado", 2000).show()
-                pomodoro.start()
+//                pomodoro.start()
             }
 
         findViewById<Button>(R.id.reset_button)
