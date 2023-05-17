@@ -9,20 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import faculdade.timezen.R
 import faculdade.timezen.planModel.Plan
 import faculdade.timezen.planModel.PomodoroTimer
+import faculdade.timezen.utils.Translator
 
 class ListPlansAdapter(
     private val context: Context,
     private val plans: List<Plan>
 ) : RecyclerView.Adapter<ListPlansAdapter.ViewHolder>() {
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val translator = Translator()
+
         fun vincula(plan: Plan) {
             val namePlan = itemView.findViewById<TextView>(R.id.text_name_plan_list)
             namePlan.text = plan.name()
             val timePlan = itemView.findViewById<TextView>(R.id.text_time_plan_list)
-            timePlan.text = "45min + 10min"
+            timePlan.text = "${translator.getHumanTime("minute", plan.getWorkTime())} + ${translator.getHumanTime("minute", plan.getBreakTime())}"
             val repeatPlan = itemView.findViewById<TextView>(R.id.text_time_repeat_list)
-            repeatPlan.text = "4 repetições"
+            repeatPlan.text = "${plan.getTaskQuantity()} repetições"
         }
     }
 

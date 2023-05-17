@@ -16,9 +16,9 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = ListPlansAdapter(this, listOf(
-            Plan(name = "Estudar", PomodoroTimer(5000, 3000, 3)),
-            Plan(name = "Meditar", PomodoroTimer(5000, 3000, 3)),
-            Plan(name = "Programar", PomodoroTimer(5000, 3000, 3))
+            Plan(name = "Estudar", PomodoroTimer(2700000, 1200000, 3)),
+            Plan(name = "Meditar", PomodoroTimer(2500000, 600000, 3)),
+            Plan(name = "Programar", PomodoroTimer(60000, 6000000, 4589))
         ))
     }
 }
