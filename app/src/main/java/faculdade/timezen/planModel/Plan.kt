@@ -23,4 +23,7 @@ class Plan(
 
     fun name(): String = name
     fun pomodoroTimer(): PomodoroTimer = pomodoroTimer
+    fun getWorkTime(): Long = pomodoroTimer.workTime
+    fun getBreakTime(): Long = pomodoroTimer.breakTime
+    fun getTaskQuantity(): Int = pomodoroTimer.tasks
 }
