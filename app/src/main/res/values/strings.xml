@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">TimeZen</string>
-    <string name="session_work">Work time!</string>
-    <string name="session_break">Break time!</string>
+
+    <!-- Tela de Principal: List Plans -->
+    <string name="text_title_home">Bem-vindo(a) ao TimeZen</string>
+    <string name="text_icon_home">Home</string>
+    <string name="text_icon_report">Report</string>
+    <string name="text_icon_info">Information</string>
+    <string name="text_description_fab">Botão de Adicionar novo Plano</string>
+
+    <string name="text_icon_back">Back</string>
+
+    <!-- Tela de Relatório: Report Plans -->
+    <string name="text_title_report">Relatório de Planos</string>
+    <string name="text_button_report">Consultar Relatório</string>
+    <string name="textButton_save_plan">Salvar</string>
+    <string name="textButton_back">Voltar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
