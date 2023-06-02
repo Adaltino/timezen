@@ -3,7 +3,6 @@ package tcc.timezen
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -12,10 +11,6 @@ import tcc.timezen.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
 
-    private lateinit var mListPlanFragment: ListPlanFragment
-    private lateinit var mReportPlanFragment: ReportPlanFragment
-    private lateinit var mFormPlanFragment: FormPlanFragment
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -23,11 +18,6 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(ListPlanFragment.newInstance())
 
         mBinding.bottomNavigation.setOnItemSelectedListener(::onSelectedBottomNavigationItem)
-
-        mBinding.fabAddNewPlan.setOnClickListener {
-            mBinding.bottomNavigation.visibility = View.GONE
-            replaceFragment(FormPlanFragment.newInstance())
-        }
     }
 
     private fun onSelectedBottomNavigationItem(menuItem: MenuItem): Boolean {

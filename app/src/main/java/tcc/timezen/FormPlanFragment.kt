@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import tcc.timezen.databinding.FragmentFormPlanBinding
 
 class FormPlanFragment : Fragment() {
@@ -17,10 +16,6 @@ class FormPlanFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = FragmentFormPlanBinding.inflate(inflater, container, false)
-        mBinding.buttonBackPlan.setOnClickListener {
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-        }
         return mBinding.root
     }
 

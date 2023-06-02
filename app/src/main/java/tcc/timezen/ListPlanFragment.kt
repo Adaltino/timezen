@@ -1,5 +1,6 @@
 package tcc.timezen
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,10 @@ class ListPlanFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = FragmentListPlanBinding.inflate(inflater, container, false)
+        mBinding.fabAddNewPlan.setOnClickListener {
+            val intent = Intent(activity, FormPlanActivity::class.java)
+            startActivity(intent)
+        }
         return mBinding.root
     }
 
