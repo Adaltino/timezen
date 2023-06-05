@@ -11,7 +11,6 @@ import tcc.timezen.model.Plan
 import tcc.timezen.utils.Translator
 
 class PlanRecyclerViewAdapter(
-    private val context: Context,
     private val plans: List<Plan>
 ) : RecyclerView.Adapter<PlanRecyclerViewAdapter.ViewHolder>() {
     
@@ -38,7 +37,7 @@ class PlanRecyclerViewAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val inflater = LayoutInflater.from(context)
+        val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_plan, parent, false)
         return ViewHolder(view)
     }

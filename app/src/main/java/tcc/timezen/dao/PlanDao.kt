@@ -5,11 +5,11 @@ import tcc.timezen.model.Plan
 class PlanDao {
 
     fun addPlan(plan: Plan) {
-        Companion.Plan.add(plan)
+        Plan.add(plan)
     }
 
-    fun listAll(plan: Plan) {
-        Companion.Plan.toList()
+    fun listAll() : List<Plan> {
+        return Plan.toList()
     }
 
     companion object {
