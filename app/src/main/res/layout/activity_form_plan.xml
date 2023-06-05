@@ -8,18 +8,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".FormPlanActivity">
+        tools:context=".activities.FormPlanActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_form_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_200"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/title_form_plan" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout_name_plan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_normal"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_form_plan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_plan_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nome do Plano"
@@ -46,6 +60,7 @@
                 android:layout_margin="@dimen/spacing_normal">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_plan_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tempo do Plano"
@@ -63,6 +78,7 @@
                 android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_edit_plan_break"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tempo de Descanso"
@@ -122,6 +138,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_plan_repeat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Repetições do Plano"
@@ -137,8 +154,8 @@
             android:layout_margin="@dimen/spacing_normal"
             android:text="@string/textButton_save_plan"
             android:textSize="@dimen/font_larger"
-            android:backgroundTint="@color/blue_700"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_task_plan"
+            android:backgroundTint="@color/blue_500"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayout_task_plan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -149,8 +166,8 @@
             android:layout_margin="@dimen/spacing_normal"
             android:text="@string/textButton_back"
             android:textSize="@dimen/font_larger"
-            android:backgroundTint="@color/blue_700"
-            app:layout_constraintTop_toBottomOf="@+id/button_save_plan"
+            android:backgroundTint="@color/blue_500"
+            app:layout_constraintTop_toBottomOf="@id/button_save_plan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

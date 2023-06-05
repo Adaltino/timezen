@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.ReportPlanFragment" >
+        tools:context=".activities.InformationActivity" >
 
-        <TextView
-            android:id="@+id/textView_title_report_plan"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_title_report"
-            android:textSize="@dimen/font_larger"
-            android:textAlignment="center"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/grey_200"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/title_information" />
 
         <Button
-            android:id="@+id/button_consultar_report_plan"
+            android:id="@+id/button_back_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_button_report"
+            android:text="@string/textButton_back"
             android:textSize="@dimen/font_larger"
             android:layout_margin="@dimen/spacing_normal"
             android:backgroundTint="@color/blue_500"
-            app:layout_constraintTop_toBottomOf="@id/textView_title_report_plan"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_information"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -9,6 +9,8 @@
     <string name="text_description_fab">Botão de Adicionar novo Plano</string>
 
     <string name="text_icon_back">Back</string>
+    <string name="title_information">Informações</string>
+    <string name="title_form_plan">Adicionar Novo Plano</string>
 
     <!-- Tela de Relatório: Report Plans -->
     <string name="text_title_report">Relatório de Planos</string>
