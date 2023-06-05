@@ -32,5 +32,6 @@
     <dimen name="image_large">40dp</dimen>
     <dimen name="image_larger">72dp</dimen>
     <dimen name="image_huge">96dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

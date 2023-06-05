@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import tcc.timezen.activities.FormPlanActivity
 import tcc.timezen.dao.PlanDao
 import tcc.timezen.databinding.FragmentListPlanBinding
+import tcc.timezen.listeners.ItemViewClickListener
 import tcc.timezen.recyclerview.adapter.PlanRecyclerViewAdapter
 
-class ListPlanFragment : Fragment() {
+class ListPlanFragment(
+    private val itemViewClickListener: ItemViewClickListener
+) : Fragment() {
     private lateinit var mBinding: FragmentListPlanBinding
 
     private val dao = PlanDao()
@@ -27,12 +30,13 @@ class ListPlanFragment : Fragment() {
             val intent = Intent(activity, FormPlanActivity::class.java)
             startActivity(intent)
         }
+
         return mBinding.root
     }
 
     override fun onResume() {
         super.onResume()
-        val adapter = PlanRecyclerViewAdapter(dao.listAll())
+        val adapter = PlanRecyclerViewAdapter(dao.listAll(), itemViewClickListener)
         mBinding.recyclerViewListPlan.adapter = adapter
 
         val layoutManager = LinearLayoutManager(requireContext())
@@ -45,6 +49,6 @@ class ListPlanFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = ListPlanFragment()
+        fun newInstance(itemViewClickListener: ItemViewClickListener) = ListPlanFragment(itemViewClickListener)
     }
 }

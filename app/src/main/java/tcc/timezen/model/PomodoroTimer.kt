@@ -11,11 +11,13 @@ class PomodoroTimer(
     private val timer = Timer()
     private lateinit var currentTask: Task
 
+    var hasStarted = false
     var isRunning = false
     var isOnWorkStage = true
 
     fun start(plan: Plan, infoManipulator: InfoManipulator) {
-        if (!isRunning) {
+        if (!hasStarted) {
+            hasStarted = true
             isRunning = true
             infoManipulator.pomodoroTextViews.planName.text = plan.name()
             currentTask = Task(this, infoManipulator)
@@ -35,6 +37,7 @@ class PomodoroTimer(
 
     fun stop() {
         isRunning = false
+        hasStarted = false
         currentTask.cancel()
     }
 }

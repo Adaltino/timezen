@@ -30,6 +30,7 @@ class Task(
                 if (remainingSessions == 0) {
                     resetVariables()
                     endTimer()
+                    pomodoroTimer.hasStarted = false
                     return
                 }
                 changeSession()

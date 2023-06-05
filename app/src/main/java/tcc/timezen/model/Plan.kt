@@ -4,10 +4,6 @@ class Plan(
     private var name: String,
     private var pomodoroTimer: PomodoroTimer
 ) {
-    fun create(name: String, pomodoroTimer: PomodoroTimer) {
-        //TODO? lol
-    }
-
     fun edit(name: String, pomodoroTimer: PomodoroTimer) {
         this.pomodoroTimer = pomodoroTimer
         this.name = name

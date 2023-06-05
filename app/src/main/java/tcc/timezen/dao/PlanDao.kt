@@ -12,6 +12,8 @@ class PlanDao {
         return Plan.toList()
     }
 
+    fun getPlan(i: Int) = Plan.get(i)
+
     companion object {
         private val Plan = mutableListOf<Plan>()
     }
