@@ -30,9 +30,10 @@ class Translator {
         return time
     }
 
-    fun getMsFromSecond(timeInSeconds: Long): Long = timeInSeconds + 1000
-    fun getMsFromMinute(timeInMinutes: Long): Long = timeInMinutes + 1000 * 60
-    fun getMsFromHour(timeInHours: Long): Long = timeInHours + 1000 * 60 * 60
+    // don't touch these ever again
+    fun getMsFromSecond(timeInSeconds: Long): Long = timeInSeconds * 1000
+    fun getMsFromMinute(timeInMinutes: Long): Long = timeInMinutes * 1000 * 60
+    fun getMsFromHour(timeInHours: Long): Long = timeInHours * 1000 * 60 * 60
 
     private fun toLimitedSeconds(ms: Long): Long = (ms / 1000) % 60
     private fun toLimitedMinutes(ms: Long): Long = ms / (1000 * 60) % 60

@@ -68,11 +68,9 @@ class SelectedPlanActivity : AppCompatActivity() {
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
-            if (mPomodoro.isRunning()) {
-                mPomodoro.stop()
-                setTextViewTexts()
-                mBinding.buttonStartPomodoro.text = "iniciar"
-            }
+            mPomodoro.stop()
+            setTextViewTexts()
+            mBinding.buttonStartPomodoro.text = "iniciar"
         }
     }
 

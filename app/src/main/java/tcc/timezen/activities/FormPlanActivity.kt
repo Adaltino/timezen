@@ -39,13 +39,13 @@ class FormPlanActivity : AppCompatActivity() {
                 name = "Plano pomodoro"
             }
 
-            if (!workTime.isBlank()) {
+            if (workTime.isNotBlank()) {
                 workLong = t.getMsFromMinute(workTime.toLong())
             }
-            if (!breakTime.isBlank()) {
+            if (breakTime.isNotBlank()) {
                 breakLong = t.getMsFromMinute(breakTime.toLong())
             }
-            if (!repeat.isBlank()) {
+            if (repeat.isNotBlank()) {
                 repeatInt = repeat.toInt()
             }
 

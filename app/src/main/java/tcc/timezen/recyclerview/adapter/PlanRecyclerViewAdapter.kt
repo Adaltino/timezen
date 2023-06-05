@@ -37,8 +37,11 @@ class PlanRecyclerViewAdapter(
             val lvlPlan = itemView.findViewById<TextView>(R.id.text_plan_lvl)
             val taskPlan = itemView.findViewById<TextView>(R.id.text_plan_repeat)
 
+            val worktime = t.getAbsoluteHumanTime("minute", plan.getWorkTime())
+            val breaktime = t.getAbsoluteHumanTime("minute", plan.getBreakTime())
+
             namePlan.text = plan.name()
-            workPlan.text = "${t.getAbsoluteHumanTime("minute", plan.getWorkTime())} + ${t.getAbsoluteHumanTime("minute", plan.getBreakTime())}"
+            workPlan.text = "$worktime + $breaktime"
             catPlan.text = "Trabalho"
             lvlPlan.text = "Médio"
             taskPlan.text = "${plan.getTaskQuantity()} repetições"
