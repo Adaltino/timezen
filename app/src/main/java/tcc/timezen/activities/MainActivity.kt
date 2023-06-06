@@ -1,5 +1,8 @@
 package tcc.timezen.activities
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         replaceFragment(ListPlanFragment.newInstance(this))
+        createNotificationChannel()
 
         mBinding.bottomNavigation.setOnItemSelectedListener(::onSelectedBottomNavigationItem)
         mBinding.toolbar.setOnMenuItemClickListener(::onSelectedToolBarItem)
@@ -63,5 +67,19 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE)
         fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
+    }
+
+    private fun createNotificationChannel() {
+        val name: CharSequence = "TimeZen"
+        val descriptionText = "Put something nice in here"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("TimeZen", name, importance).apply {
+            description = descriptionText
+        }
+
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // Register the channel with the system
+        notificationManager.createNotificationChannel(channel)
     }
 }

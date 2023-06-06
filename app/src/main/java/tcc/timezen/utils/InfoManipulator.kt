@@ -9,10 +9,12 @@ import android.util.Log
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import tcc.timezen.listeners.TimerListener
 import java.io.IOException
 
 class InfoManipulator(
     val pomodoroTextViews: PomodoroTextViews,
+    val listener: TimerListener
     //private val dataStore: DataStore<Preferences>
 ) {
 

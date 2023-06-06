@@ -1,5 +1,6 @@
 package tcc.timezen.model
 
+import android.util.Log
 import tcc.timezen.utils.InfoManipulator
 import tcc.timezen.utils.Text
 import tcc.timezen.utils.Translator
@@ -20,6 +21,7 @@ class Task(
     private var isWorkSession = true
 
     override fun run() {
+        Log.i("TimerTask", "timer is running")
         if (pomodoroTimer.isRunning) {
             val timeRemaining: Long = getRemainingTime()
 
@@ -30,8 +32,6 @@ class Task(
                 if (remainingSessions == 0) {
                     resetVariables()
                     endTimer()
-                    pomodoroTimer.hasStarted = false
-                    pomodoroTimer.isRunning = false
                     return
                 }
                 changeSession()
@@ -40,6 +40,8 @@ class Task(
             updateCounter(timeRemaining)
         }
     }
+
+    private fun timeHasEnded(timeRemaining: Long): Boolean = timeRemaining <= 0
 
     private fun getRemainingTime(): Long {
         return if (pomodoroTimer.isOnWorkStage) {
@@ -60,8 +62,6 @@ class Task(
         infoMan.setText(Text.TEXT_VIEW_COUNTER.ordinal, time)
     }
 
-    private fun timeHasEnded(timeRemaining: Long) : Boolean = timeRemaining <= 0
-
     private fun resetVariables() {
         pomodoroTimer.isRunning = false
         pomodoroTimer.isOnWorkStage = true
@@ -71,12 +71,23 @@ class Task(
     }
 
     private fun endTimer() {
+        pomodoroTimer.hasStarted = false
+        pomodoroTimer.isRunning = false
         this.cancel()
+    }
+
+    private fun notifySessionChange() {
+        if (pomodoroTimer.isOnWorkStage) {
+            infoMan.listener.onSessionChange("descansa, jovem")
+        } else {
+            infoMan.listener.onSessionChange("vamos nessa, jovem")
+        }
     }
 
     private fun changeStage() {
         pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
         timePassed = 0
+        notifySessionChange()
     }
 
     private fun changeSession() {

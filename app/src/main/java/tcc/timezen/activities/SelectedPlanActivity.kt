@@ -1,18 +1,30 @@
 package tcc.timezen.activities
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import tcc.timezen.R
 import tcc.timezen.dao.PlanDao
 import tcc.timezen.databinding.ActivitySelectedPlanBinding
+import tcc.timezen.listeners.TimerListener
 import tcc.timezen.model.Pomodoro
 import tcc.timezen.utils.InfoManipulator
 import tcc.timezen.utils.PomodoroTextViews
 import tcc.timezen.utils.Translator
 
-class SelectedPlanActivity : AppCompatActivity() {
+class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     private lateinit var mBinding: ActivitySelectedPlanBinding
     private lateinit var mPomodoro: Pomodoro
@@ -28,7 +40,7 @@ class SelectedPlanActivity : AppCompatActivity() {
     * lateinit property currentTask has not been initialized
     *
     * mPomodoro.start() inside onDestroy() method actually works to stop this from happening
-     */
+    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,6 +50,33 @@ class SelectedPlanActivity : AppCompatActivity() {
         getPlanFromDao()
         setTextViewTexts()
         initializeComponents()
+    }
+
+    override fun onSessionChange(s: String) {
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_notifications_24)
+            .setContentTitle("TimeZen")
+            .setContentText(s)
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        try {
+            NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build())
+        } catch (e: Exception) {
+            Log.e("notification", e.toString())
+        }
     }
 
     private fun setTextViewTexts() {
@@ -52,7 +91,8 @@ class SelectedPlanActivity : AppCompatActivity() {
                 planName = findViewById(R.id.tv_plan_name),
                 planStage = findViewById(R.id.tv_plan_stage),
                 counter = findViewById(R.id.tv_count_time)
-            )
+            ),
+            this
         ))
     }
 
@@ -78,5 +118,10 @@ class SelectedPlanActivity : AppCompatActivity() {
         mPomodoro.start()
         mPomodoro.stop()
         super.onDestroy()
+    }
+
+    private companion object {
+        private const val CHANNEL_ID = "TimeZen"
+        private const val NOTIFICATION_ID: Int = 1
     }
 }

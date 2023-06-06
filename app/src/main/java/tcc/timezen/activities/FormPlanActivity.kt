@@ -101,6 +101,16 @@ class FormPlanActivity : AppCompatActivity() {
                 level
             )
             dao.addPlan(newPlan)
+            dao.addPlan(Plan(
+                name = "plano teste",
+                pomodoroTimer = PomodoroTimer(
+                    t.getMsFromSecond(1),
+                    t.getMsFromSecond(1),
+                    3
+                ),
+                category,
+                level
+            ))
             finish()
         }
 
