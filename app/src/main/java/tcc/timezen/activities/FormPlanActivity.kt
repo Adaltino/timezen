@@ -28,26 +28,38 @@ class FormPlanActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_form_plan)
         dbTimezen = DBTimezen(this)
 
-        val autoCompleteCategory: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_category_plan)
-        val autoCompleteLvl: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_importanceLevel_plan)
+        val catPlan: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_category_plan)
+        val lvlPlan: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_importanceLevel_plan)
 
         val adapterCat = ArrayAdapter(this, R.layout.item_dropdown, dbTimezen.getCategoryNames())
         val adapterLvl = ArrayAdapter(this, R.layout.item_dropdown, dbTimezen.getImportanceLevelNames())
 
-        autoCompleteCategory.setAdapter(adapterCat)
-        autoCompleteLvl.setAdapter(adapterLvl)
+        catPlan.setAdapter(adapterCat)
+        lvlPlan.setAdapter(adapterLvl)
 
         val namePlan = findViewById<TextInputEditText>(R.id.text_edit_plan_name)
         val workPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_time)
         val breakPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_break)
-        //val catPlan = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView_category_plan)
-        //val lvl = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView_importanceLevel_plan)
         val repeatPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_repeat)
+
+        catPlan.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            val idCategory = dbTimezen.getCategoryById(selectedItem)
+            Toast.makeText(this, "ID - $idCategory | Nome: $selectedItem", Toast.LENGTH_LONG).show()
+        }
+
+        lvlPlan.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            val idLvl = dbTimezen.getImportanceLevelById(selectedItem)
+            Toast.makeText(this, "ID - $idLvl | Nome: $selectedItem", Toast.LENGTH_LONG).show()
+        }
 
         mBinding.buttonSavePlan.setOnClickListener {
             var name = namePlan.text.toString()
             val workTime = workPlan.text.toString()
             val breakTime = breakPlan.text.toString()
+            var category = catPlan.text.toString()
+            var level = lvlPlan.text.toString()
             val repeat = repeatPlan.text.toString()
 
             var workLong: Long = t.getMsFromMinute(45)
@@ -61,9 +73,19 @@ class FormPlanActivity : AppCompatActivity() {
             if (workTime.isNotBlank()) {
                 workLong = t.getMsFromMinute(workTime.toLong())
             }
+
             if (breakTime.isNotBlank()) {
                 breakLong = t.getMsFromMinute(breakTime.toLong())
             }
+
+            if (category.isBlank()) {
+                category = "Trabalho"
+            }
+
+            if (level.isBlank()) {
+                level = "Muito Baixo"
+            }
+
             if (repeat.isNotBlank()) {
                 repeatInt = repeat.toInt()
             }

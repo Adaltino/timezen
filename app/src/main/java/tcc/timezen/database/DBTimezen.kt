@@ -80,6 +80,21 @@ class DBTimezen(context: Context) :
         return catNames
     }
 
+    fun getCategoryById(name: String): Int {
+        val selectQuery = "SELECT cat_id FROM Category WHERE cat_name = ?"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, arrayOf(name))
+        var catId = -1 // valor padrão caso não encontre o nome da categoria
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getColumnIndex("cat_id")
+            catId = cursor.getInt(id)
+        }
+        cursor.close()
+        db.close()
+        return catId
+    }
+
     fun getImportanceLevelNames(): List<String> {
         val lvlNames = mutableListOf<String>()
         val selectQuery = "SELECT lvl_name FROM ImportanceLevel"
@@ -96,5 +111,20 @@ class DBTimezen(context: Context) :
         cursor.close()
         db.close()
         return lvlNames
+    }
+
+    fun getImportanceLevelById(name: String): Int {
+        val selectQuery = "SELECT lvl_id FROM ImportanceLevel WHERE lvl_name = ?"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, arrayOf(name))
+        var lvlId = -1 // valor padrão caso não encontre o nome da categoria
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getColumnIndex("lvl_id")
+            lvlId = cursor.getInt(id)
+        }
+        cursor.close()
+        db.close()
+        return lvlId
     }
 }
