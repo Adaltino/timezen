@@ -96,7 +96,9 @@ class FormPlanActivity : AppCompatActivity() {
                     workLong,
                     breakLong,
                     repeatInt
-                )
+                ),
+                category,
+                level
             )
             dao.addPlan(newPlan)
             finish()

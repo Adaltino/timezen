@@ -1,5 +1,6 @@
 package tcc.timezen.database
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -126,5 +127,26 @@ class DBTimezen(context: Context) :
         cursor.close()
         db.close()
         return lvlId
+    }
+
+    fun insertPlan(
+        name: String,
+        workTime: Int,
+        breakTime: Int,
+        task: Int,
+        categoryId: Int,
+        importanceLevelId: Int
+    ) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("pla_name", name)
+        values.put("pla_work", workTime)
+        values.put("pla_break", breakTime)
+        values.put("pla_task", task)
+        values.put("pla_cat_id", categoryId)
+        values.put("pla_lvl_id", importanceLevelId)
+
+        db.insert("Plan", null, values)
+        db.close()
     }
 }

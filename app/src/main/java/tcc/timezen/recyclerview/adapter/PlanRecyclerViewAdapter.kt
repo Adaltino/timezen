@@ -41,8 +41,8 @@ class PlanRecyclerViewAdapter(
 
             namePlan.text = plan.name()
             workPlan.text = "$worktime + $breaktime"
-            catPlan.text = "Trabalho"
-            lvlPlan.text = "Médio"
+            catPlan.text =  plan.category()
+            lvlPlan.text =  plan.importanceLevel()
             taskPlan.text = "${plan.getTaskQuantity()} repetições"
         }
 
