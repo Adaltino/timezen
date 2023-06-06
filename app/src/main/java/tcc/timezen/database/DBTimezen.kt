@@ -8,13 +8,13 @@ class DBTimezen(context: Context) :
     SQLiteOpenHelper(context, "timezen.db", null, 1) {
 
     val sqlCreateTables = arrayOf(
-        "CREATE IF NOT EXIST TABLE Category " +
+        "CREATE TABLE Category " +
                 "(cat_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "cat_name TEXT NOT NULL)",
-        "CREATE IF NOT EXIST TABLE ImportanceLevel " +
+        "CREATE TABLE ImportanceLevel " +
                 "(lvl_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "lvl_name TEXT NOT NULL)",
-        "CREATE IF NOT EXIST TABLE Plan " +
+        "CREATE TABLE Plan " +
                 "(pla_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "pla_name TEXT NOT NULL, " +
                 "pla_work INTEGER NOT NULL, " +
@@ -24,7 +24,7 @@ class DBTimezen(context: Context) :
                 "pla_lvl_id INTEGER NOT NULL, " +
                 "FOREIGN KEY (pla_cat_id) REFERENCES Category(cat_id), " +
                 "FOREIGN KEY (pla_lvl_id) REFERENCES ImportanceLevel(lvl_id))",
-        "CREATE IF NOT EXIST TABLE Report " +
+        "CREATE TABLE Report " +
                 "(rpt_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "rpt_pla_name TEXT NOT NULL, " +
                 "rpt_pla_work INTEGER NOT NULL, " +
@@ -34,7 +34,8 @@ class DBTimezen(context: Context) :
                 "rpt_pla_lvl_name TEXT NOT NULL)",
         "INSERT INTO Category (cat_name) VALUES ('Trabalho')",
         "INSERT INTO Category (cat_name) VALUES ('Estudos')",
-        "INSERT INTO Category (cat_name) VALUES ('Meditação')",
+        "INSERT INTO Category (cat_name) VALUES ('Hobbies')",
+        "INSERT INTO Category (cat_name) VALUES ('Atividades Físicas')",
         "INSERT INTO ImportanceLevel (lvl_name) VALUES ('Muito Baixo')",
         "INSERT INTO ImportanceLevel (lvl_name) VALUES ('Baixo')",
         "INSERT INTO ImportanceLevel (lvl_name) VALUES ('Médio')",
@@ -59,5 +60,41 @@ class DBTimezen(context: Context) :
             db.execSQL(it)
         }
         onCreate(db)
+    }
+
+    fun getCategoryNames(): List<String> {
+        val catNames = mutableListOf<String>()
+        val selectQuery = "SELECT cat_name FROM Category"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nameCat = cursor.getColumnIndex("cat_name")
+                val catName = cursor.getString(nameCat)
+                catNames.add(catName)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return catNames
+    }
+
+    fun getImportanceLevelNames(): List<String> {
+        val lvlNames = mutableListOf<String>()
+        val selectQuery = "SELECT lvl_name FROM ImportanceLevel"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nameLvl = cursor.getColumnIndex("lvl_name")
+                val lvlName = cursor.getString(nameLvl)
+                lvlNames.add(lvlName)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return lvlNames
     }
 }

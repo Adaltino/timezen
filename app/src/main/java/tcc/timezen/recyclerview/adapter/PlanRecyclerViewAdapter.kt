@@ -32,7 +32,6 @@ class PlanRecyclerViewAdapter(
         private fun vinculateTextViews(plan: Plan) {
             val namePlan = itemView.findViewById<TextView>(R.id.text_plan_name)
             val workPlan = itemView.findViewById<TextView>(R.id.text_plan_time)
-//            val breakPlan = itemView.findViewById<TextView>(R.id.text_plan)
             val catPlan = itemView.findViewById<TextView>(R.id.text_plan_category)
             val lvlPlan = itemView.findViewById<TextView>(R.id.text_plan_lvl)
             val taskPlan = itemView.findViewById<TextView>(R.id.text_plan_repeat)
