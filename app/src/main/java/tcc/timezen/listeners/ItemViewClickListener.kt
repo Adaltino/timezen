@@ -4,6 +4,6 @@ import tcc.timezen.model.Plan
 
 interface ItemViewClickListener {
     fun onItemClickView(plan: Plan, position: Int)
-    fun onEditItemClickView(plan: Plan)
+    fun onEditItemClickView(plan: Plan, position: Int)
     fun onDeleteItemClickView(plan: Plan)
 }

@@ -54,7 +54,7 @@ class PlanRecyclerViewAdapter(
 
         private fun vinculateEditButton(plan: Plan, position: Int) {
             itemView.findViewById<ImageButton>(R.id.button_edit_plan).setOnClickListener {
-                itemViewClickListener.onEditItemClickView(plan)
+                itemViewClickListener.onEditItemClickView(plan, position)
             }
         }
 

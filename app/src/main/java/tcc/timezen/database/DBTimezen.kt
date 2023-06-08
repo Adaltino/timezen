@@ -185,4 +185,50 @@ class DBTimezen(context: Context) :
         db.close()
         return plans
     }
+
+    fun getPlanId(name: String): Int {
+        val selectQuery = "SELECT pla_id FROM Plan WHERE pla_name = ?"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, arrayOf(name))
+        var plaId = -1 // valor padrão caso não encontre o nome da categoria
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getColumnIndex("pla_id")
+            plaId = cursor.getInt(id)
+        }
+        cursor.close()
+        db.close()
+        return plaId
+    }
+
+    fun deletePlanById(planoId: Int): Boolean {
+        val db = writableDatabase
+        val whereClause = "pla_id = ?"
+        val whereArgs = arrayOf(planoId.toString())
+        val deletedRows = db.delete("Plan", whereClause, whereArgs)
+        db.close()
+        return deletedRows > 0
+    }
+
+    fun updatePlan(
+        id: Int,
+        name: String,
+        workTime: Int,
+        breakTime: Int,
+        task: Int,
+        categoryId: Int,
+        importanceLevelId: Int
+    ) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("pla_name", name)
+        values.put("pla_work", workTime)
+        values.put("pla_break", breakTime)
+        values.put("pla_task", task)
+        values.put("pla_cat_id", categoryId)
+        values.put("pla_lvl_id", importanceLevelId)
+
+        db.update("Plan", values, "id=?", arrayOf(id.toString()))
+        db.close()
+    }
 }

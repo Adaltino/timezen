@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import tcc.timezen.fragments.ListPlanFragment
 import tcc.timezen.R
+import tcc.timezen.database.DBTimezen
 import tcc.timezen.fragments.ReportPlanFragment
 import tcc.timezen.databinding.ActivityMainBinding
 import tcc.timezen.listeners.ItemViewClickListener
@@ -20,6 +21,7 @@ import tcc.timezen.model.Plan
 
 class MainActivity : AppCompatActivity(), ItemViewClickListener {
     private lateinit var mBinding: ActivityMainBinding
+    private lateinit var dbTimezen: DBTimezen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +41,20 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
         startActivity(intent)
     }
 
-    override fun onEditItemClickView(plan: Plan) {
-        Toast.makeText(this, "${plan.name()}, (edit)", Toast.LENGTH_SHORT).show()
+    override fun onEditItemClickView(plan: Plan, position: Int) {
+        val intent = Intent(this, EditPlanActivity::class.java)
+        intent.putExtra("id", position)
+        startActivity(intent)
     }
 
     override fun onDeleteItemClickView(plan: Plan) {
-        Toast.makeText(this, "${plan.name()}, (delete)", Toast.LENGTH_SHORT).show()
+        dbTimezen = DBTimezen(this)
+        val id = dbTimezen.getPlanId(plan.name())
+        if (dbTimezen.deletePlanById(id)) {
+            Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onSelectedToolBarItem(menuItem: MenuItem): Boolean {

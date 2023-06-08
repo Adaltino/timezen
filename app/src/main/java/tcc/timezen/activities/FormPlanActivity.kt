@@ -42,18 +42,6 @@ class FormPlanActivity : AppCompatActivity() {
         val breakPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_break)
         val repeatPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_repeat)
 
-        catPlan.setOnItemClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position).toString()
-            val idCategory = dbTimezen.getCategoryById(selectedItem)
-            Toast.makeText(this, "ID - $idCategory | Nome: $selectedItem", Toast.LENGTH_LONG).show()
-        }
-
-        lvlPlan.setOnItemClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position).toString()
-            val idLvl = dbTimezen.getImportanceLevelById(selectedItem)
-            Toast.makeText(this, "ID - $idLvl | Nome: $selectedItem", Toast.LENGTH_LONG).show()
-        }
-
         mBinding.buttonSavePlan.setOnClickListener {
             var name = namePlan.text.toString()
             val workTime = workPlan.text.toString()
