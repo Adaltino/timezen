@@ -90,27 +90,10 @@ class FormPlanActivity : AppCompatActivity() {
                 repeatInt = repeat.toInt()
             }
 
-            val newPlan = Plan(
-                name = name,
-                pomodoroTimer = PomodoroTimer(
-                    workLong,
-                    breakLong,
-                    repeatInt
-                ),
-                category,
-                level
-            )
-            dao.addPlan(newPlan)
-            dao.addPlan(Plan(
-                name = "plano teste",
-                pomodoroTimer = PomodoroTimer(
-                    t.getMsFromSecond(1),
-                    t.getMsFromSecond(1),
-                    3
-                ),
-                category,
-                level
-            ))
+            val idCat = dbTimezen.getCategoryById(category)
+            val idLvl = dbTimezen.getImportanceLevelById(level)
+
+            dbTimezen.insertPlan(name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
             finish()
         }
 

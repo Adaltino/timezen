@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import tcc.timezen.R
 import tcc.timezen.dao.PlanDao
+import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.ActivitySelectedPlanBinding
 import tcc.timezen.listeners.TimerListener
 import tcc.timezen.model.Pomodoro
@@ -28,6 +29,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     private lateinit var mBinding: ActivitySelectedPlanBinding
     private lateinit var mPomodoro: Pomodoro
+    private lateinit var dbTimezen: DBTimezen
 
     private val dao = PlanDao()
     private val t = Translator()
@@ -85,8 +87,9 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     private fun getPlanFromDao() {
+        dbTimezen = DBTimezen(this)
         val extras = intent.extras
-        mPomodoro = Pomodoro(dao.getPlan(extras!!.getInt("id")), InfoManipulator(
+        mPomodoro = Pomodoro(dbTimezen.getPlan().get(extras!!.getInt("id")), InfoManipulator(
             PomodoroTextViews(
                 planName = findViewById(R.id.tv_plan_name),
                 planStage = findViewById(R.id.tv_plan_stage),

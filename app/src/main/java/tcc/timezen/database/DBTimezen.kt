@@ -4,9 +4,14 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import tcc.timezen.dao.PlanDao
+import tcc.timezen.model.Plan
+import tcc.timezen.model.PomodoroTimer
 
 class DBTimezen(context: Context) :
     SQLiteOpenHelper(context, "timezen.db", null, 1) {
+
+    val dao = PlanDao()
 
     val sqlCreateTables = arrayOf(
         "CREATE TABLE Category " +
@@ -148,5 +153,36 @@ class DBTimezen(context: Context) :
 
         db.insert("Plan", null, values)
         db.close()
+    }
+
+    fun getPlan(): List<Plan> {
+        val plans = mutableListOf<Plan>()
+        val db = readableDatabase
+        val selectQuery = "SELECT pla_name, pla_work, pla_break, pla_task, Category.cat_name, ImportanceLevel.lvl_name " +
+                "FROM Plan JOIN Category ON Plan.pla_cat_id = Category.cat_id JOIN ImportanceLevel ON Plan.pla_lvl_id = ImportanceLevel.lvl_id"
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val name = cursor.getColumnIndex("pla_name")
+                val workTime = cursor.getColumnIndex("pla_work")
+                val breakTime = cursor.getColumnIndex("pla_break")
+                val task = cursor.getColumnIndex("pla_task")
+                val catName = cursor.getColumnIndex("cat_name")
+                val lvlName = cursor.getColumnIndex("lvl_name")
+
+                val namePlan = cursor.getString(name)
+                val workPlan = cursor.getLong(workTime)
+                val breakPlan = cursor.getLong(breakTime)
+                val taskPlan = cursor.getInt(task)
+                val catPlan = cursor.getString(catName)
+                val lvlPlan = cursor.getString(lvlName)
+
+                plans.add(Plan(namePlan, PomodoroTimer(workPlan, breakPlan, taskPlan), catPlan, lvlPlan))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return plans
     }
 }
