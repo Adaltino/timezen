@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
         } else {
             Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
         }
+        replaceFragment(ListPlanFragment.newInstance(this))
     }
 
     private fun onSelectedToolBarItem(menuItem: MenuItem): Boolean {
