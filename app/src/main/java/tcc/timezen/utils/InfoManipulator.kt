@@ -1,16 +1,12 @@
 package tcc.timezen.utils
 
-import android.util.Log
 //import androidx.datastore.core.DataStore
 //import androidx.datastore.preferences.core.Preferences
 //import androidx.datastore.preferences.core.edit
 //import androidx.datastore.preferences.core.emptyPreferences
 //import androidx.datastore.preferences.core.longPreferencesKey
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import android.util.Log
 import tcc.timezen.listeners.TimerListener
-import java.io.IOException
 
 class InfoManipulator(
     val pomodoroTextViews: PomodoroTextViews,

@@ -15,9 +15,6 @@
         android:theme="@style/Theme.TimeZen"
         tools:targetApi="31">
         <activity
-            android:name=".activities.EditPlanActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.SelectedPlanActivity"
             android:exported="false"
             android:label="@string/title_activity_selected_plan"

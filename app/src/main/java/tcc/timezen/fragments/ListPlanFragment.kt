@@ -2,13 +2,12 @@ package tcc.timezen.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import tcc.timezen.activities.FormPlanActivity
-import tcc.timezen.dao.PlanDao
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentListPlanBinding
 import tcc.timezen.listeners.ItemViewClickListener
@@ -52,6 +51,7 @@ class ListPlanFragment(
 
     companion object {
         @JvmStatic
-        fun newInstance(itemViewClickListener: ItemViewClickListener) = ListPlanFragment(itemViewClickListener)
+        fun newInstance(itemViewClickListener: ItemViewClickListener) =
+            ListPlanFragment(itemViewClickListener)
     }
 }

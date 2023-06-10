@@ -1,10 +1,8 @@
 package tcc.timezen.recyclerview.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -19,7 +17,10 @@ class PlanRecyclerViewAdapter(
     private val itemViewClickListener: ItemViewClickListener
 ) : RecyclerView.Adapter<PlanRecyclerViewAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, private val itemViewClickListener: ItemViewClickListener) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(
+        view: View,
+        private val itemViewClickListener: ItemViewClickListener
+    ): RecyclerView.ViewHolder(view) {
         private val t = Translator()
 
         fun vinculateComponents(plan: Plan, position: Int) {
@@ -41,8 +42,8 @@ class PlanRecyclerViewAdapter(
 
             namePlan.text = plan.name()
             workPlan.text = "$worktime + $breaktime"
-            catPlan.text =  plan.category()
-            lvlPlan.text =  plan.importanceLevel()
+            catPlan.text = plan.category()
+            lvlPlan.text = plan.importanceLevel()
             taskPlan.text = "${plan.getTaskQuantity()} repetições"
         }
 

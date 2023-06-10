@@ -1,8 +1,8 @@
 package tcc.timezen.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
@@ -92,7 +92,8 @@ class FormPlanActivity : AppCompatActivity() {
 
 
             if (isEditingPlan) {
-                db.updatePlan(db.getPlanId(plan!!.name()), name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+                val id = db.getPlanId(plan!!.name())
+                db.updatePlan(id, name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
             } else {
                 db.insertPlan(name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
             }
@@ -102,8 +103,10 @@ class FormPlanActivity : AppCompatActivity() {
     }
 
     private fun setTextViewsToExistingPlan(originalPlan: Plan) {
-        val originalWorkTime = t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getWorkTime())
-        val originalBreakTime = t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getBreakTime())
+        val originalWorkTime =
+            t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getWorkTime())
+        val originalBreakTime =
+            t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getBreakTime())
         val originalTaskQuantity = originalPlan.getTaskQuantity().toString()
 
         mBinding.textEditPlanName.setText(originalPlan.name())
@@ -111,6 +114,9 @@ class FormPlanActivity : AppCompatActivity() {
         mBinding.textEditPlanBreak.setText(originalBreakTime)
         mBinding.textEditPlanRepeat.setText(originalTaskQuantity)
         mBinding.autoCompleteTextViewCategoryPlan.setText(originalPlan.category(), false)
-        mBinding.autoCompleteTextViewImportanceLevelPlan.setText(originalPlan.importanceLevel(), false)
+        mBinding.autoCompleteTextViewImportanceLevelPlan.setText(
+            originalPlan.importanceLevel(),
+            false
+        )
     }
 }

@@ -1,7 +1,7 @@
 package tcc.timezen.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import tcc.timezen.R
 import tcc.timezen.databinding.ActivityInformationBinding

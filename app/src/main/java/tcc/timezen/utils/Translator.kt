@@ -25,6 +25,7 @@ class Translator {
                     String.format("%03dmins", toMinutes(ms))
                 }
             }
+
             "minuteNumbersOnly" -> {
                 time = if (ms < 6000000) {
                     String.format("%02d", toMinutes(ms))
@@ -32,6 +33,7 @@ class Translator {
                     String.format("%03d", toMinutes(ms))
                 }
             }
+
             "hour" -> time = String.format("%02dhours", toHours(ms))
         }
         return time

@@ -4,14 +4,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import tcc.timezen.dao.PlanDao
 import tcc.timezen.model.Plan
 import tcc.timezen.model.PomodoroTimer
 
 class DBTimezen(context: Context) :
     SQLiteOpenHelper(context, "timezen.db", null, 1) {
-
-    val dao = PlanDao()
 
     val sqlCreateTables = arrayOf(
         "CREATE TABLE Category " +
@@ -158,8 +155,9 @@ class DBTimezen(context: Context) :
     fun getPlanList(): List<Plan> {
         val plans = mutableListOf<Plan>()
         val db = readableDatabase
-        val selectQuery = "SELECT pla_name, pla_work, pla_break, pla_task, Category.cat_name, ImportanceLevel.lvl_name " +
-                "FROM Plan JOIN Category ON Plan.pla_cat_id = Category.cat_id JOIN ImportanceLevel ON Plan.pla_lvl_id = ImportanceLevel.lvl_id"
+        val selectQuery =
+            "SELECT pla_name, pla_work, pla_break, pla_task, Category.cat_name, ImportanceLevel.lvl_name " +
+                    "FROM Plan JOIN Category ON Plan.pla_cat_id = Category.cat_id JOIN ImportanceLevel ON Plan.pla_lvl_id = ImportanceLevel.lvl_id"
         val cursor = db.rawQuery(selectQuery, null)
 
         if (cursor.moveToFirst()) {
@@ -178,11 +176,17 @@ class DBTimezen(context: Context) :
                 val catPlan = cursor.getString(catName)
                 val lvlPlan = cursor.getString(lvlName)
 
-                plans.add(Plan(namePlan, PomodoroTimer(workPlan, breakPlan, taskPlan), catPlan, lvlPlan))
+                plans.add(Plan(
+                    namePlan,
+                    PomodoroTimer(workPlan, breakPlan, taskPlan),
+                    catPlan,
+                    lvlPlan
+                ))
             } while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
+
         return plans
     }
 

@@ -4,18 +4,18 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import tcc.timezen.fragments.ListPlanFragment
 import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
-import tcc.timezen.fragments.ReportPlanFragment
 import tcc.timezen.databinding.ActivityMainBinding
+import tcc.timezen.fragments.ListPlanFragment
+import tcc.timezen.fragments.ReportPlanFragment
 import tcc.timezen.listeners.ItemViewClickListener
 import tcc.timezen.model.Plan
 
