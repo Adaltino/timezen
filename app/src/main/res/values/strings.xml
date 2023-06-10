@@ -62,4 +62,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="button_stop_plan">Parar</string>
+    <string name="timer_finished">00:00:00</string>
+    <string name="nice">se essa porra n�o funcionar eu nao sei mais o que vai fazer isso funcionar</string>
 </resources>

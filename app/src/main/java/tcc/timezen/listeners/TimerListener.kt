@@ -1,5 +1,8 @@
 package tcc.timezen.listeners
 
 interface TimerListener {
-    fun onSessionChange(s: String)
+    fun onTick(timeString: String)
+    fun onStageChange(isOnWorkStage: Boolean)
+    fun onSessionChange(sessionsLeft: Int)
+    fun onFinish()
 }

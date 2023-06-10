@@ -15,11 +15,10 @@ class PomodoroTimer(
     var isRunning = false
     var isOnWorkStage = true
 
-    fun start(plan: Plan, infoManipulator: InfoManipulator) {
+    fun start(infoManipulator: InfoManipulator) {
         if (!hasStarted) {
             hasStarted = true
             isRunning = true
-            infoManipulator.pomodoroTextViews.planName.text = plan.name()
             currentTask = Task(this, infoManipulator)
             timer.scheduleAtFixedRate(currentTask, 0, 1000)
         } else {

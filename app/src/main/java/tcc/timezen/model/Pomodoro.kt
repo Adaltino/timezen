@@ -7,7 +7,7 @@ class Pomodoro(
     private val infoManipulator: InfoManipulator
 ) {
     fun start() {
-        plan.pomodoroTimer().start(plan, infoManipulator)
+        plan.pomodoroTimer().start(infoManipulator)
     }
 
     fun pause() {

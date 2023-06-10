@@ -1,8 +1,6 @@
 package tcc.timezen.model
 
-import android.util.Log
 import tcc.timezen.utils.InfoManipulator
-import tcc.timezen.utils.Text
 import tcc.timezen.utils.Translator
 import java.util.TimerTask
 
@@ -11,19 +9,34 @@ class Task(
     private val infoMan: InfoManipulator
 ) : TimerTask() {
 
-    private val ONE_SECOND = 1000
-    private val translator = Translator()
+    companion object {
+        private const val ONE_SECOND = 1000
+    }
+
+    private val t = Translator()
 
     private var timePassed: Long = 0
     private var remainingSessions = pomodoroTimer.tasks
     private val initialWorkTime = pomodoroTimer.workTime
     private val initialBreakTime = pomodoroTimer.breakTime
-    private var isWorkSession = true
+    private var isWorkStage = true
 
+    /*
+
+        mental note because I have alzheimer's:
+
+            1 session is made up of two timers: work and break. ( plan.getTasksQuantity() )
+            both work and break are called stages
+
+            "in the break stage, you rest a lot"
+            "there are 2 sessions left, that is 2 stages of work time and 2 stages of break time"
+
+     */
     override fun run() {
-        Log.i("TimerTask", "timer is running")
         if (pomodoroTimer.isRunning) {
-            val timeRemaining: Long = getRemainingTime()
+            val timeRemaining = getRemainingTime()
+
+            updateCounter(timeRemaining)
 
             if (!timeHasEnded(timeRemaining)) {
                 timePassed += ONE_SECOND
@@ -31,13 +44,11 @@ class Task(
                 changeStage()
                 if (remainingSessions == 0) {
                     resetVariables()
-                    endTimer()
+                    this.cancel()
                     return
                 }
                 changeSession()
             }
-
-            updateCounter(timeRemaining)
         }
     }
 
@@ -45,63 +56,42 @@ class Task(
 
     private fun getRemainingTime(): Long {
         return if (pomodoroTimer.isOnWorkStage) {
-            updateStage("Work time!")
             initialWorkTime - timePassed
         } else {
-            updateStage("Break time!")
             initialBreakTime - timePassed
         }
     }
 
-    private fun updateStage(s: String) {
-        infoMan.setText(Text.TEXT_VIEW_PLAN_STAGE.ordinal, s)
-    }
-
     private fun updateCounter(timeRemaining: Long) {
-        val time = translator.timeStringFromLong(timeRemaining)
-        infoMan.setText(Text.TEXT_VIEW_COUNTER.ordinal, time)
+        infoMan.listener.onTick(t.timeStringFromLong(timeRemaining))
     }
 
     private fun resetVariables() {
         pomodoroTimer.isRunning = false
         pomodoroTimer.isOnWorkStage = true
-        val time = translator.timeStringFromLong(0)
-        infoMan.setText(Text.TEXT_VIEW_PLAN_STAGE.ordinal, "Pomodoro finished!")
-        infoMan.setText(Text.TEXT_VIEW_COUNTER.ordinal, time)
-    }
-
-    private fun endTimer() {
         pomodoroTimer.hasStarted = false
-        pomodoroTimer.isRunning = false
-        this.cancel()
-    }
-
-    private fun notifySessionChange() {
-        if (pomodoroTimer.isOnWorkStage) {
-            infoMan.listener.onSessionChange("descansa, jovem")
-        } else {
-            infoMan.listener.onSessionChange("vamos nessa, jovem")
-        }
+        infoMan.listener.onFinish()
     }
 
     private fun changeStage() {
         pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
         timePassed = 0
-        notifySessionChange()
+        infoMan.listener.onStageChange(pomodoroTimer.isOnWorkStage)
     }
 
     private fun changeSession() {
         decrementSession()
-        invertSessionType()
+        invertStageType()
+        infoMan.listener.onSessionChange(remainingSessions)
     }
 
     private fun decrementSession() {
-        if (!isWorkSession) {
+        if (!isWorkStage) {
             remainingSessions--
         }
     }
 
-    private fun invertSessionType() {
-        isWorkSession = !isWorkSession
+    private fun invertStageType() {
+        isWorkStage = !isWorkStage
     }
 }

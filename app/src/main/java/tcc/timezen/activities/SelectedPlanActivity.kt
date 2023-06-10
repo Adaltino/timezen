@@ -14,7 +14,6 @@ import tcc.timezen.databinding.ActivitySelectedPlanBinding
 import tcc.timezen.listeners.TimerListener
 import tcc.timezen.model.Pomodoro
 import tcc.timezen.utils.InfoManipulator
-import tcc.timezen.utils.PomodoroTextViews
 import tcc.timezen.utils.Translator
 
 class SelectedPlanActivity : AppCompatActivity(), TimerListener {
@@ -25,31 +24,41 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     private val t = Translator()
 
-    /*
-    * this activity can cause a crash if pomodoro is not started:
-    *
-    * java.lang.RuntimeException: Unable to destroy activity
-    * {tcc.timezen/tcc.timezen.activities.SelectedPlanActivity}: kotlin.UninitializedPropertyAccessException:
-    * lateinit property currentTask has not been initialized
-    *
-    * mPomodoro.start() inside onDestroy() method actually works to stop this from happening
-    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mBinding = ActivitySelectedPlanBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        getPlanFromDao()
-        setTextViewTexts()
+        dbTimezen = DBTimezen(this)
+
+        getPlanToDisplay()
+        setTextViewTextsOnActivityCreate()
         initializeComponents()
     }
 
-    override fun onSessionChange(s: String) {
+    override fun onTick(timeString: String) {
+        mBinding.tvCountTime.text = timeString
+    }
+
+    override fun onStageChange(isOnWorkStage: Boolean) {
+        if (isOnWorkStage) {
+            mBinding.tvPlanStage.text = "hora da atividade carai"
+            notifyStageChange("vamos nessa, jovem")
+        } else {
+            mBinding.tvPlanStage.text = "descansa nessa porra"
+            notifyStageChange("descança, jovem")
+        }
+    }
+
+    override fun onSessionChange(sessionsLeft: Int) {
+        mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes~"
+    }
+
+    private fun notifyStageChange(notificationText: String) {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentTitle("TimeZen")
-            .setContentText(s)
+            .setContentText(notificationText)
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -65,6 +74,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
+
         try {
             NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build())
         } catch (e: Exception) {
@@ -72,23 +82,22 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         }
     }
 
-    private fun setTextViewTexts() {
-        mBinding.tvPlanName.text = mPomodoro.plan().name()
-        mBinding.tvCountTime.text = t.timeStringFromLong(mPomodoro.plan().getWorkTime())
+    override fun onFinish() {
+        mBinding.tvPlanStage.text = "Pomodoro terminado"
+        mBinding.tvCountTime.text = t.timeStringFromLong(0)
     }
 
-    private fun getPlanFromDao() {
-        dbTimezen = DBTimezen(this)
+    private fun setTextViewTextsOnActivityCreate() {
+        mBinding.tvPlanName.text = mPomodoro.plan().name()
+        mBinding.tvCountTime.text = t.timeStringFromLong(mPomodoro.plan().getWorkTime())
+        mBinding.tvSessionLeft.text = "${mPomodoro.plan().getTaskQuantity()} sessoes restantes~"
+    }
+
+    private fun getPlanToDisplay() {
         val extras = intent.extras
         mPomodoro = Pomodoro(
-            dbTimezen.getPlanById(extras!!.getInt("id")), InfoManipulator(
-                PomodoroTextViews(
-                    planName = findViewById(R.id.tv_plan_name),
-                    planStage = findViewById(R.id.tv_plan_stage),
-                    counter = findViewById(R.id.tv_count_time)
-                ),
-                this
-            )
+            plan = dbTimezen.getPlanById(extras!!.getInt("id")),
+            InfoManipulator(this)
         )
     }
 
@@ -105,7 +114,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
         mBinding.buttonResetPomodoro.setOnClickListener {
             mPomodoro.stop()
-            setTextViewTexts()
+            setTextViewTextsOnActivityCreate()
             mBinding.buttonStartPomodoro.text = "iniciar"
         }
     }
