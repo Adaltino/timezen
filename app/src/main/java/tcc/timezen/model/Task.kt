@@ -1,12 +1,12 @@
 package tcc.timezen.model
 
-import tcc.timezen.utils.InfoManipulator
+import tcc.timezen.listeners.TimerListener
 import tcc.timezen.utils.Translator
 import java.util.TimerTask
 
 class Task(
     private val pomodoroTimer: PomodoroTimer,
-    private val infoMan: InfoManipulator
+    private val listener: TimerListener
 ) : TimerTask() {
 
     companion object {
@@ -63,26 +63,26 @@ class Task(
     }
 
     private fun updateCounter(timeRemaining: Long) {
-        infoMan.listener.onTick(t.timeStringFromLong(timeRemaining))
+        listener.onTick(t.timeStringFromLong(timeRemaining))
     }
 
     private fun resetVariables() {
         pomodoroTimer.isRunning = false
         pomodoroTimer.isOnWorkStage = true
         pomodoroTimer.hasStarted = false
-        infoMan.listener.onFinish()
+        listener.onFinish()
     }
 
     private fun changeStage() {
         pomodoroTimer.isOnWorkStage = !pomodoroTimer.isOnWorkStage
         timePassed = 0
-        infoMan.listener.onStageChange(pomodoroTimer.isOnWorkStage)
+        listener.onStageChange(pomodoroTimer.isOnWorkStage)
     }
 
     private fun changeSession() {
         decrementSession()
         invertStageType()
-        infoMan.listener.onSessionChange(remainingSessions)
+        listener.onSessionChange(remainingSessions)
     }
 
     private fun decrementSession() {

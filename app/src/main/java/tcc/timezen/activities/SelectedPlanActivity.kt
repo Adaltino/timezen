@@ -13,7 +13,6 @@ import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.ActivitySelectedPlanBinding
 import tcc.timezen.listeners.TimerListener
 import tcc.timezen.model.Pomodoro
-import tcc.timezen.utils.InfoManipulator
 import tcc.timezen.utils.Translator
 
 class SelectedPlanActivity : AppCompatActivity(), TimerListener {
@@ -97,14 +96,13 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         val extras = intent.extras
         mPomodoro = Pomodoro(
             plan = dbTimezen.getPlanById(extras!!.getInt("id")),
-            InfoManipulator(this)
         )
     }
 
     private fun initializeComponents() {
         mBinding.buttonStartPomodoro.setOnClickListener {
             if (!mPomodoro.isRunning()) {
-                mPomodoro.start()
+                mPomodoro.start(this)
                 mBinding.buttonStartPomodoro.text = "pausar"
             } else {
                 mPomodoro.pause()
@@ -120,7 +118,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     override fun onDestroy() {
-        mPomodoro.start()
+        mPomodoro.start(this)
         mPomodoro.stop()
         super.onDestroy()
     }

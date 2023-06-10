@@ -1,13 +1,12 @@
 package tcc.timezen.model
 
-import tcc.timezen.utils.InfoManipulator
+import tcc.timezen.listeners.TimerListener
 
 class Pomodoro(
     private var plan: Plan,
-    private val infoManipulator: InfoManipulator
 ) {
-    fun start() {
-        plan.pomodoroTimer().start(infoManipulator)
+    fun start(timerListener: TimerListener) {
+        plan.pomodoroTimer().start(timerListener)
     }
 
     fun pause() {

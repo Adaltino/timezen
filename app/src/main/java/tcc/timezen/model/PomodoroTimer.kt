@@ -1,6 +1,6 @@
 package tcc.timezen.model
 
-import tcc.timezen.utils.InfoManipulator
+import tcc.timezen.listeners.TimerListener
 import java.util.Timer
 
 class PomodoroTimer(
@@ -15,18 +15,18 @@ class PomodoroTimer(
     var isRunning = false
     var isOnWorkStage = true
 
-    fun start(infoManipulator: InfoManipulator) {
+    fun start(timerListener: TimerListener) {
         if (!hasStarted) {
             hasStarted = true
             isRunning = true
-            currentTask = Task(this, infoManipulator)
+            currentTask = Task(this, timerListener)
             timer.scheduleAtFixedRate(currentTask, 0, 1000)
         } else {
             resume()
         }
     }
 
-    fun resume() {
+    private fun resume() {
         isRunning = true
     }
 

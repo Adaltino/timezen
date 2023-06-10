@@ -20,6 +20,7 @@ import tcc.timezen.listeners.ItemViewClickListener
 import tcc.timezen.model.Plan
 
 class MainActivity : AppCompatActivity(), ItemViewClickListener {
+
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var dbTimezen: DBTimezen
 
@@ -90,7 +91,6 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
 
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        // Register the channel with the system
         notificationManager.createNotificationChannel(channel)
     }
 }
