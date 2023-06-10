@@ -2,57 +2,66 @@ package tcc.timezen.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.ListAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.textfield.TextInputEditText
 import tcc.timezen.R
-import tcc.timezen.dao.PlanDao
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.ActivityFormPlanBinding
 import tcc.timezen.model.Plan
-import tcc.timezen.model.PomodoroTimer
 import tcc.timezen.utils.Translator
 
 class FormPlanActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityFormPlanBinding
-    private lateinit var dbTimezen: DBTimezen
-    val t = Translator()
-    val dao = PlanDao()
+    private lateinit var db: DBTimezen
+    private val t = Translator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_form_plan)
-        dbTimezen = DBTimezen(this)
 
-        val catPlan: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_category_plan)
-        val lvlPlan: AutoCompleteTextView = findViewById(R.id.autoCompleteTextView_importanceLevel_plan)
+        mBinding.buttonBackPlan.setOnClickListener {
+            finish()
+        }
 
-        val adapterCat = ArrayAdapter(this, R.layout.item_dropdown, dbTimezen.getCategoryNames())
-        val adapterLvl = ArrayAdapter(this, R.layout.item_dropdown, dbTimezen.getImportanceLevelNames())
+        db = DBTimezen(this)
 
-        catPlan.setAdapter(adapterCat)
-        lvlPlan.setAdapter(adapterLvl)
+        val adapterCat = ArrayAdapter(this, R.layout.item_dropdown, db.getCategoryNames())
+        val adapterLvl = ArrayAdapter(this, R.layout.item_dropdown, db.getImportanceLevelNames())
 
-        val namePlan = findViewById<TextInputEditText>(R.id.text_edit_plan_name)
-        val workPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_time)
-        val breakPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_break)
-        val repeatPlan = findViewById<TextInputEditText>(R.id.text_edit_plan_repeat)
+        mBinding.autoCompleteTextViewCategoryPlan.setAdapter(adapterCat)
+        mBinding.autoCompleteTextViewImportanceLevelPlan.setAdapter(adapterLvl)
+
+        val extras: Bundle? = intent.extras
+
+        if (extras == null) {
+            initializeRegisterButton(false, null)
+        } else {
+            val originalPlan = db.getPlanById(extras.getInt("id"))
+            setTextViewsToExistingPlan(originalPlan)
+            initializeRegisterButton(true, originalPlan)
+        }
+    }
+
+    private fun initializeRegisterButton(isEditingPlan: Boolean, plan: Plan?) {
+
+        if (isEditingPlan) {
+            mBinding.buttonSavePlan.text = "finalizar ediç�o"
+        }
 
         mBinding.buttonSavePlan.setOnClickListener {
-            var name = namePlan.text.toString()
-            val workTime = workPlan.text.toString()
-            val breakTime = breakPlan.text.toString()
-            var category = catPlan.text.toString()
-            var level = lvlPlan.text.toString()
-            val repeat = repeatPlan.text.toString()
 
-            var workLong: Long = t.getMsFromMinute(45)
-            var breakLong: Long = t.getMsFromMinute(10)
+            var name = mBinding.textEditPlanName.text.toString()
+            val workTime = mBinding.textEditPlanWork.text.toString()
+            val breakTime = mBinding.textEditPlanBreak.text.toString()
+            var category = mBinding.autoCompleteTextViewCategoryPlan.text.toString()
+            var level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
+            val repeat = mBinding.textEditPlanRepeat.text.toString()
+
+            var workLong = t.getMsFromMinute(45)
+            var breakLong = t.getMsFromMinute(10)
             var repeatInt = 3
+
+            println("$name")
 
             if (name.isBlank()) {
                 name = "Plano pomodoro"
@@ -78,15 +87,30 @@ class FormPlanActivity : AppCompatActivity() {
                 repeatInt = repeat.toInt()
             }
 
-            val idCat = dbTimezen.getCategoryById(category)
-            val idLvl = dbTimezen.getImportanceLevelById(level)
+            val idCat = db.getCategoryById(category)
+            val idLvl = db.getImportanceLevelById(level)
 
-            dbTimezen.insertPlan(name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+
+            if (isEditingPlan) {
+                db.updatePlan(db.getPlanId(plan!!.name()), name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+            } else {
+                db.insertPlan(name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+            }
+
             finish()
         }
+    }
 
-        mBinding.buttonBackPlan.setOnClickListener {
-            finish()
-        }
+    private fun setTextViewsToExistingPlan(originalPlan: Plan) {
+        val originalWorkTime = t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getWorkTime())
+        val originalBreakTime = t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getBreakTime())
+        val originalTaskQuantity = originalPlan.getTaskQuantity().toString()
+
+        mBinding.textEditPlanName.setText(originalPlan.name())
+        mBinding.textEditPlanWork.setText(originalWorkTime)
+        mBinding.textEditPlanBreak.setText(originalBreakTime)
+        mBinding.textEditPlanRepeat.setText(originalTaskQuantity)
+        mBinding.autoCompleteTextViewCategoryPlan.setText(originalPlan.category(), false)
+        mBinding.autoCompleteTextViewImportanceLevelPlan.setText(originalPlan.importanceLevel(), false)
     }
 }

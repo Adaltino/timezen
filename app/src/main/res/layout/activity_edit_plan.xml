@@ -59,7 +59,7 @@
                 android:layout_margin="@dimen/spacing_normal">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_edit_plan_time"
+                    android:id="@+id/text_edit_plan_work"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tempo do Plano"

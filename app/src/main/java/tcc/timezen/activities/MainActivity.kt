@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        dbTimezen = DBTimezen(this)
 
         replaceFragment(ListPlanFragment.newInstance(this))
         createNotificationChannel()
@@ -42,13 +43,13 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
     }
 
     override fun onEditItemClickView(plan: Plan, position: Int) {
-        val intent = Intent(this, EditPlanActivity::class.java)
+        val intent = Intent(this, FormPlanActivity::class.java)
         intent.putExtra("id", position)
+
         startActivity(intent)
     }
 
     override fun onDeleteItemClickView(plan: Plan) {
-        dbTimezen = DBTimezen(this)
         val id = dbTimezen.getPlanId(plan.name())
         if (dbTimezen.deletePlanById(id)) {
             Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()

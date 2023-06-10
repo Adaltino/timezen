@@ -1,16 +1,9 @@
 package tcc.timezen.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -89,7 +82,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     private fun getPlanFromDao() {
         dbTimezen = DBTimezen(this)
         val extras = intent.extras
-        mPomodoro = Pomodoro(dbTimezen.getPlan().get(extras!!.getInt("id")), InfoManipulator(
+        mPomodoro = Pomodoro(dbTimezen.getPlanById(extras!!.getInt("id")), InfoManipulator(
             PomodoroTextViews(
                 planName = findViewById(R.id.tv_plan_name),
                 planStage = findViewById(R.id.tv_plan_stage),

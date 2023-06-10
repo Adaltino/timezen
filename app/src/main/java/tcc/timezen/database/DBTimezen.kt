@@ -155,7 +155,7 @@ class DBTimezen(context: Context) :
         db.close()
     }
 
-    fun getPlan(): List<Plan> {
+    fun getPlanList(): List<Plan> {
         val plans = mutableListOf<Plan>()
         val db = readableDatabase
         val selectQuery = "SELECT pla_name, pla_work, pla_break, pla_task, Category.cat_name, ImportanceLevel.lvl_name " +
@@ -185,6 +185,8 @@ class DBTimezen(context: Context) :
         db.close()
         return plans
     }
+
+    fun getPlanById(id: Int): Plan = getPlanList()[id]
 
     fun getPlanId(name: String): Int {
         val selectQuery = "SELECT pla_id FROM Plan WHERE pla_name = ?"
@@ -219,6 +221,8 @@ class DBTimezen(context: Context) :
         categoryId: Int,
         importanceLevelId: Int
     ) {
+        println("id for update is $id")
+        println(getPlanId("porra"))
         val db = writableDatabase
         val values = ContentValues()
         values.put("pla_name", name)
@@ -227,8 +231,8 @@ class DBTimezen(context: Context) :
         values.put("pla_task", task)
         values.put("pla_cat_id", categoryId)
         values.put("pla_lvl_id", importanceLevelId)
-
-        db.update("Plan", values, "id=?", arrayOf(id.toString()))
+        println("updating table")
+        db.update("Plan", values, "pla_id=?", arrayOf(id.toString()))
         db.close()
     }
 }

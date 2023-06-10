@@ -1,7 +1,6 @@
 package tcc.timezen.fragments
 
 import android.content.Intent
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ class ListPlanFragment(
     private lateinit var mBinding: FragmentListPlanBinding
     private lateinit var dbTimezen: DBTimezen
 
-    private val dao = PlanDao()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +39,7 @@ class ListPlanFragment(
 
         dbTimezen = DBTimezen(requireContext())
 
-        val adapter = PlanRecyclerViewAdapter(dbTimezen.getPlan(), itemViewClickListener)
+        val adapter = PlanRecyclerViewAdapter(dbTimezen.getPlanList(), itemViewClickListener)
         mBinding.recyclerViewListPlan.adapter = adapter
 
         val layoutManager = LinearLayoutManager(requireContext())
