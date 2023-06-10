@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -51,13 +52,24 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
     }
 
     override fun onDeleteItemClickView(plan: Plan) {
-        val id = dbTimezen.getPlanId(plan.name())
-        if (dbTimezen.deletePlanById(id)) {
-            Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
-        }
-        replaceFragment(ListPlanFragment.newInstance(this))
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setMessage("Tem certeza que quer deletar esse plano planoso terra planoso chamado ${plan.name()}?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                val id = dbTimezen.getPlanId(plan.name())
+                if (dbTimezen.deletePlanById(id)) {
+                    Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
+                }
+                replaceFragment(ListPlanFragment.newInstance(this))
+            }
+            .setNegativeButton("No") { dialog, id ->
+                // Dismiss the dialog
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun onSelectedToolBarItem(menuItem: MenuItem): Boolean {
