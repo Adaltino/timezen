@@ -4,9 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".activities.InformationActivity" >
 
         <androidx.appcompat.widget.Toolbar
@@ -21,6 +24,158 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/title_information" />
 
+        <TextView
+            android:id="@+id/text_title_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_information"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_information"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/text_title_burnout"
+            android:textSize="@dimen/font_larger"/>
+
+        <TextView
+            android:id="@+id/text_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/text_title_information"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_information_2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/text_information"
+            android:textSize="@dimen/font_larger" />
+
+        <TextView
+            android:id="@+id/text_information_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/text_information"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_information_3"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/text_second_information"
+            android:textSize="@dimen/font_larger" />
+
+        <TextView
+            android:id="@+id/text_information_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/text_information_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout_sindrome"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/text_third_information"
+            android:textSize="@dimen/font_larger" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout_sindrome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/text_information_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/button_back_information"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Cansaço excessivo, físico e mental;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Dor de cabeça frequente;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Alterações no apetite;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Dificuldades de concentração;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Sentimentos de fracasso e insegurança;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Negatividade constante;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Sentimentos de derrota e desesperança;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Sentimentos de incompetência;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Alterações repentinas de humor;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Isolamento;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Fadiga;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Pressão alta;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Dores musculares;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Problemas gastrointestinais;"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_large"
+                android:text="Alteração nos batimentos cardíacos;"/>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/button_back_information"
             android:layout_width="match_parent"
@@ -29,9 +184,10 @@
             android:textSize="@dimen/font_larger"
             android:layout_margin="@dimen/spacing_normal"
             android:backgroundTint="@color/blue_500"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_information"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout_sindrome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -38,11 +38,19 @@ class ListPlanFragment(
 
         dbTimezen = DBTimezen(requireContext())
 
-        val adapter = PlanRecyclerViewAdapter(dbTimezen.getPlanList(), itemViewClickListener)
-        mBinding.recyclerViewListPlan.adapter = adapter
+        if (dbTimezen.hasPlan()) {
+            mBinding.textViewTitleListPlan.visibility = View.GONE
+            mBinding.recyclerViewListPlan.visibility = View.VISIBLE
 
-        val layoutManager = LinearLayoutManager(requireContext())
-        mBinding.recyclerViewListPlan.layoutManager = layoutManager
+            val adapter = PlanRecyclerViewAdapter(dbTimezen.getPlanList(), itemViewClickListener)
+            mBinding.recyclerViewListPlan.adapter = adapter
+
+            val layoutManager = LinearLayoutManager(requireContext())
+            mBinding.recyclerViewListPlan.layoutManager = layoutManager
+        } else {
+            mBinding.recyclerViewListPlan.visibility = View.GONE
+            mBinding.textViewTitleListPlan.visibility = View.VISIBLE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

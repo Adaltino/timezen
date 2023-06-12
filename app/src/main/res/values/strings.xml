@@ -65,4 +65,8 @@
     <string name="button_stop_plan">Parar</string>
     <string name="timer_finished">00:00:00</string>
     <string name="nice">se essa porra n�o funcionar eu nao sei mais o que vai fazer isso funcionar</string>
+    <string name="text_title_burnout">Síndrome de Burnout</string>
+    <string name="text_information">Síndrome de Bournout ou Síndrome do Esgotamento Profissional é um distúrbio emocional com sintomas de exaustão extrema, estresse e esgotamento físico resultante de situações de trabalho desgastante, que demandam muita competitividade ou responsabiblidade. A principal causa da doença é justamente o excesso de trabalho e ou estudo. Esta síndrome é comum em estudantes e profissionais que atuam diariamente sob pressão e com resposabilidades constantes, como médicos, enfermeiros, professores, policiais, jornalistas, dentre outros.</string>
+    <string name="text_second_information">A Síndrome de Burnout também pode acontecer quando o profissional planeja ou é pautado para objetivos de trabalho muito difíceis, situações em que a pessoa possa achar, por algum motivo, não ter capaciadades suficientes para os cumprir. Também é comum com estudantes em épocas preparatórias de grandes provas. Essa síndrome pode resultar em estado de depressão profunda e por isso é essencial procurar apoio profissional no surgimento dos primeiros sintomas.</string>
+    <string name="text_third_information">A Síndrome de Burnnout envolve nervosismo, sofrimentos psicológios e problemas físicos, como dor de barriga, cansaço, execessio e tonturas. O estresse e a falta de vontade de sair da cama ou de casa, quando constantes, podem indicar, o início da doença. Os principais sinais e sintomas que podem indicar a Síndrome de Burnout são:</string>
 </resources>

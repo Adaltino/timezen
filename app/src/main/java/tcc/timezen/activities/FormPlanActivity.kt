@@ -45,7 +45,7 @@ class FormPlanActivity : AppCompatActivity() {
     private fun initializeRegisterButton(isEditingPlan: Boolean, plan: Plan?) {
 
         if (isEditingPlan) {
-            mBinding.buttonSavePlan.text = "finalizar ediç�o"
+            mBinding.buttonSavePlan.text = "finalizar edição"
         }
 
         mBinding.buttonSavePlan.setOnClickListener {
@@ -109,6 +109,7 @@ class FormPlanActivity : AppCompatActivity() {
             t.getAbsoluteHumanTime("minuteNumbersOnly", originalPlan.getBreakTime())
         val originalTaskQuantity = originalPlan.getTaskQuantity().toString()
 
+        mBinding.toolbarFormPlan.title = "Editar Plano"
         mBinding.textEditPlanName.setText(originalPlan.name())
         mBinding.textEditPlanWork.setText(originalWorkTime)
         mBinding.textEditPlanBreak.setText(originalBreakTime)

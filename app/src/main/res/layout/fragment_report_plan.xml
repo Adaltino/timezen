@@ -10,6 +10,16 @@
         android:layout_height="match_parent"
         tools:context=".fragments.ReportPlanFragment" >
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <TextView
             android:id="@+id/textView_title_report_plan"
             android:layout_width="match_parent"
@@ -29,6 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/text_button_report"
             android:textSize="@dimen/font_larger"
+            android:visibility="visible"
             android:layout_margin="@dimen/spacing_normal"
             android:backgroundTint="@color/blue_500"
             app:layout_constraintTop_toBottomOf="@id/textView_title_report_plan"

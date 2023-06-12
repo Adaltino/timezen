@@ -29,6 +29,7 @@ class DBTimezen(context: Context) :
                 "FOREIGN KEY (pla_lvl_id) REFERENCES ImportanceLevel(lvl_id))",
         "CREATE TABLE Report " +
                 "(rpt_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "rpt_pla_id INTEGER NOT NULL, " +
                 "rpt_pla_name TEXT NOT NULL, " +
                 "rpt_pla_work INTEGER NOT NULL, " +
                 "rpt_pla_break INTEGER NOT NULL, " +
@@ -87,7 +88,7 @@ class DBTimezen(context: Context) :
         val selectQuery = "SELECT cat_id FROM Category WHERE cat_name = ?"
         val db = readableDatabase
         val cursor = db.rawQuery(selectQuery, arrayOf(name))
-        var catId = -1 // valor padrão caso não encontre o nome da categoria
+        var catId = -1
 
         if (cursor.moveToFirst()) {
             val id = cursor.getColumnIndex("cat_id")
@@ -120,7 +121,7 @@ class DBTimezen(context: Context) :
         val selectQuery = "SELECT lvl_id FROM ImportanceLevel WHERE lvl_name = ?"
         val db = readableDatabase
         val cursor = db.rawQuery(selectQuery, arrayOf(name))
-        var lvlId = -1 // valor padrão caso não encontre o nome da categoria
+        var lvlId = -1
 
         if (cursor.moveToFirst()) {
             val id = cursor.getColumnIndex("lvl_id")
@@ -196,7 +197,7 @@ class DBTimezen(context: Context) :
         val selectQuery = "SELECT pla_id FROM Plan WHERE pla_name = ?"
         val db = readableDatabase
         val cursor = db.rawQuery(selectQuery, arrayOf(name))
-        var plaId = -1 // valor padrão caso não encontre o nome da categoria
+        var plaId = -1
 
         if (cursor.moveToFirst()) {
             val id = cursor.getColumnIndex("pla_id")
@@ -239,4 +240,59 @@ class DBTimezen(context: Context) :
         db.update("Plan", values, "pla_id=?", arrayOf(id.toString()))
         db.close()
     }
+
+    fun hasPlan(): Boolean {
+        val db = readableDatabase
+        val selectQuery = "SELECT COUNT(*) FROM  Plan"
+        val cursor = db.rawQuery(selectQuery, null)
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        db.close()
+        return count > 0
+    }
+
+    fun insertReport(
+        id: Int,
+        name: String,
+        workTime: Int,
+        breakTime: Int,
+        task: Int,
+        category: String,
+        importanceLevel: String
+    ) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("rpt_pla_id", id)
+        values.put("rpt_pla_name", name)
+        values.put("rpt_pla_work", workTime)
+        values.put("rpt_pla_break", breakTime)
+        values.put("rpt_pla_task", task)
+        values.put("rpt_pla_cat_name", category)
+        values.put("rpt_pla_lvl_name", importanceLevel)
+
+        db.insert("Report", null, values)
+        db.close()
+    }
+
+    fun reset() {
+        val db = writableDatabase
+        sqlDropTables.forEach {
+            db.execSQL(it)
+        }
+        onCreate(db)
+    }
+    /*
+        if (select rpt_plan_work from report where rpt_pla_id = dbTimezen.getPlanId) {
+            update report set rpt_pla_work = totalTempoPlano
+        } else {
+            insert into report (25, "Corrigir Provas", 45, 10, 5, Trabalho, Muito Alto)
+        }
+
+        true = 25 - Corrigir Provas | 90 | 10 | 5 | Trabalho | Muito Alta
+
+        false = insert into report (25, "Corrigir Provas", 45, 10, 5, Trabalho, Muito Alto)
+
+        tempoTotal = 3
+     */
 }
