@@ -61,8 +61,6 @@ class FormPlanActivity : AppCompatActivity() {
             var breakLong = t.getMsFromMinute(10)
             var repeatInt = 3
 
-            println("$name")
-
             if (name.isBlank()) {
                 name = "Plano pomodoro"
             }

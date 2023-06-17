@@ -44,7 +44,7 @@ class Translator {
     fun getMsFromHour(timeInHours: Long): Long = timeInHours * 1000 * 60 * 60
 
     private fun toLimitedSeconds(ms: Long): Long = (ms / 1000) % 60
-    private fun toLimitedMinutes(ms: Long): Long = ms / (1000 * 60) % 60
+    public fun toLimitedMinutes(ms: Long): Long = ms / (1000 * 60) % 60
     private fun toLimitedHours(ms: Long): Long = ms / (1000 * 60 * 60) % 24
     private fun toSeconds(ms: Long): Long = (ms / 1000)
     private fun toMinutes(ms: Long): Long = ms / (1000 * 60)

@@ -6,10 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.utils.ColorTemplate
+import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentReportPlanBinding
 
@@ -42,7 +48,7 @@ class ReportPlanFragment : Fragment() {
     private fun setupPieChart() {
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.legend.isEnabled = true
+        pieChart.legend.isEnabled = false
         pieChart.isRotationEnabled = true
         pieChart.isHighlightPerTapEnabled = true
     }
@@ -50,8 +56,8 @@ class ReportPlanFragment : Fragment() {
     private fun loadPieChartData() {
         val entries = ArrayList<PieEntry>()
         val dataCursor = dbTimezen.readableDatabase.query(
-            "Plan",
-            arrayOf("pla_name", "pla_work"),
+            "Report",
+            arrayOf("rpt_pla_name", "rpt_pla_work"),
             null,
             null,
             null,
@@ -60,8 +66,8 @@ class ReportPlanFragment : Fragment() {
         )
         if (dataCursor.moveToFirst()) {
             do {
-                val name = dataCursor.getColumnIndex("pla_name")
-                val work = dataCursor.getColumnIndex("pla_work")
+                val name = dataCursor.getColumnIndex("rpt_pla_name")
+                val work = dataCursor.getColumnIndex("rpt_pla_work")
 
                 val namePlan = dataCursor.getString(name)
                 val workPlan = dataCursor.getInt(work)
@@ -70,11 +76,12 @@ class ReportPlanFragment : Fragment() {
         }
         dataCursor.close()
 
-        val dataSet = PieDataSet(entries, "Plan")
-        dataSet.colors = listOf(Color.GREEN, Color.BLUE, Color.YELLOW, Color.RED)
+        val dataSet = PieDataSet(entries, "Relatório")
+        dataSet.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA)
         dataSet.valueTextSize = 12f
 
         val data = PieData(dataSet)
+        pieChart.animateXY(3000, 3000)
         pieChart.data = data
         pieChart.invalidate()
     }

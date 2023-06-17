@@ -57,14 +57,18 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 val id = dbTimezen.getPlanId(plan.name())
+                val idR = dbTimezen.getReportById(plan.name())
                 if (dbTimezen.deletePlanById(id)) {
+                    if (dbTimezen.hasNameExistsInReport(plan.name())) {
+                        dbTimezen.deleteReportById(idR)
+                    }
                     Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show()
                 }
                 replaceFragment(ListPlanFragment.newInstance(this))
             }
-            .setNegativeButton("No") { dialog, id ->
+            .setNegativeButton("No") { dialog, _ ->
                 // Dismiss the dialog
                 dialog.dismiss()
             }

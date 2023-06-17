@@ -140,6 +140,7 @@ class DBTimezen(context: Context) :
         categoryId: Int,
         importanceLevelId: Int
     ) {
+        println("New Plan: $name")
         val db = writableDatabase
         val values = ContentValues()
         values.put("pla_name", name)
@@ -209,6 +210,7 @@ class DBTimezen(context: Context) :
     }
 
     fun deletePlanById(planoId: Int): Boolean {
+        println("Delete id $planoId")
         val db = writableDatabase
         val whereClause = "pla_id = ?"
         val whereArgs = arrayOf(planoId.toString())
@@ -227,7 +229,6 @@ class DBTimezen(context: Context) :
         importanceLevelId: Int
     ) {
         println("id for update is $id")
-        println(getPlanId("porra"))
         val db = writableDatabase
         val values = ContentValues()
         values.put("pla_name", name)
@@ -261,6 +262,7 @@ class DBTimezen(context: Context) :
         category: String,
         importanceLevel: String
     ) {
+        println("New Plan Report: $id - $name ")
         val db = writableDatabase
         val values = ContentValues()
         values.put("rpt_pla_id", id)
@@ -275,6 +277,68 @@ class DBTimezen(context: Context) :
         db.close()
     }
 
+    fun getReportById(name: String): Int {
+        val selectQuery = "SELECT rpt_id FROM Report WHERE rpt_pla_name = ?"
+        val db = readableDatabase
+        val cursor = db.rawQuery(selectQuery, arrayOf(name))
+        var rptId = -1
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getColumnIndex("rpt_id")
+            rptId = cursor.getInt(id)
+        }
+        cursor.close()
+        db.close()
+        return rptId
+    }
+
+    fun deleteReportById(reportId: Int): Boolean {
+        println("Delete id $reportId")
+        val db = writableDatabase
+        val whereClause = "rpt_id = ?"
+        val whereArgs = arrayOf(reportId.toString())
+        val deletedRows = db.delete("Report", whereClause, whereArgs)
+        db.close()
+        return deletedRows > 0
+    }
+
+    fun hasNameExistsInReport(name: String): Boolean {
+        val db = readableDatabase
+        val selectQuery = "SELECT COUNT(*) FROM Report WHERE rpt_pla_name = ?"
+        val selectionArgs = arrayOf(name)
+        val cursor = db.rawQuery(selectQuery, selectionArgs)
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        db.close()
+        return count > 0
+    }
+
+    fun getWorkInReport(name: String): Int {
+        val db = readableDatabase
+        val selectQuery = "SELECT rpt_pla_work FROM Report WHERE rpt_pla_name = ?"
+        val selectionArgs = arrayOf(name)
+        val cursor = db.rawQuery(selectQuery, selectionArgs)
+        cursor.moveToFirst()
+        val work = cursor.getColumnIndex("rpt_pla_work")
+        val workPlan = cursor.getInt(work)
+        cursor.close()
+        db.close()
+        return workPlan
+    }
+
+    fun updateWorkInReport(name: String, value: Int) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("rpt_pla_work", value)
+        }
+
+        val whereClause = "rpt_pla_name = ?"
+        val whereArgs = arrayOf(name)
+        db.update("Report", values, whereClause, whereArgs)
+        db.close()
+    }
+
     fun reset() {
         val db = writableDatabase
         sqlDropTables.forEach {
@@ -282,17 +346,4 @@ class DBTimezen(context: Context) :
         }
         onCreate(db)
     }
-    /*
-        if (select rpt_plan_work from report where rpt_pla_id = dbTimezen.getPlanId) {
-            update report set rpt_pla_work = totalTempoPlano
-        } else {
-            insert into report (25, "Corrigir Provas", 45, 10, 5, Trabalho, Muito Alto)
-        }
-
-        true = 25 - Corrigir Provas | 90 | 10 | 5 | Trabalho | Muito Alta
-
-        false = insert into report (25, "Corrigir Provas", 45, 10, 5, Trabalho, Muito Alto)
-
-        tempoTotal = 3
-     */
 }
