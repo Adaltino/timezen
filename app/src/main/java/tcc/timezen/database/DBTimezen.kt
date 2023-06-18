@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import tcc.timezen.model.Plan
 import tcc.timezen.model.PomodoroTimer
+import tcc.timezen.model.Report
 
 class DBTimezen(context: Context) :
     SQLiteOpenHelper(context, "timezen.db", null, 1) {
@@ -52,6 +53,27 @@ class DBTimezen(context: Context) :
         "DROP TABLE Plan",
         "DROP TABLE Report"
     )
+
+    val sqlInsertTeste = arrayOf(
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Correr', 1800000, 600000, 5, 4, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (1, 'Correr', 150, 10, 5, 'Atividades Físicas', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Ler', 900000, 300000, 3, 3, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (2, 'Ler', 45, 5, 3, 'Hobbies', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Geografia', 1200000, 900000, 2, 2, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (3, 'Geografia', 40, 15, 2, 'Estudos', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Jogar', 2400000, 600000, 2, 3, 3)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (4, 'Jogar', 80, 10, 2, 'Hobbies', 'Médio')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Programar', 3000000, 900000, 3, 3, 5)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (5, 'Programar', 150, 15, 3, 'Hobbies', 'Muito Alto')"
+    )
+
+    fun insertTeste() {
+        val db = writableDatabase
+        sqlInsertTeste.forEach {
+            db.execSQL(it)
+        }
+        db.close()
+    }
 
     override fun onCreate(db: SQLiteDatabase) {
         sqlCreateTables.forEach {
@@ -152,6 +174,28 @@ class DBTimezen(context: Context) :
 
         db.insert("Plan", null, values)
         db.close()
+    }
+
+    fun getReportList(): List<Report> {
+        val reports = mutableListOf<Report>()
+        val db = readableDatabase
+        val selectQuery = "SELECT rpt_pla_name, rpt_pla_work FROM Report"
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val name = cursor.getColumnIndex("rpt_pla_name")
+                val work = cursor.getColumnIndex("rpt_pla_work")
+
+                val rptName = cursor.getString(name)
+                val rptWork = cursor.getInt(work)
+
+                reports.add(Report(rptName, rptWork))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return reports
     }
 
     fun getPlanList(): List<Plan> {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.BarData
@@ -18,6 +19,8 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentReportPlanBinding
+import tcc.timezen.recyclerview.adapter.PlanRecyclerViewAdapter
+import tcc.timezen.recyclerview.adapter.ReportRecyclerViewAdapter
 
 class ReportPlanFragment : Fragment() {
     private lateinit var mBinding: FragmentReportPlanBinding
@@ -37,18 +40,27 @@ class ReportPlanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBinding.buttonConsultarReportPlan.setOnClickListener {
-            mBinding.buttonConsultarReportPlan.visibility = View.GONE
+            //mBinding.buttonConsultarReportPlan.visibility = View.GONE
+            //mBinding.textViewTitleReportPlan.visibility = View.GONE
+            //mBinding.pieChartView.visibility = View.VISIBLE
+            //setupPieChart()
+            //loadPieChartData()
             mBinding.textViewTitleReportPlan.visibility = View.GONE
-            mBinding.pieChartView.visibility = View.VISIBLE
-            setupPieChart()
-            loadPieChartData()
+            mBinding.buttonConsultarReportPlan.visibility = View.GONE
+            mBinding.recyclerViewReportPlan.visibility = View.VISIBLE
+
+            val adapter = ReportRecyclerViewAdapter(dbTimezen.getReportList())
+            mBinding.recyclerViewReportPlan.adapter = adapter
+
+            val layoutManager = LinearLayoutManager(requireContext())
+            mBinding.recyclerViewReportPlan.layoutManager = layoutManager
         }
     }
 
     private fun setupPieChart() {
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.legend.isEnabled = false
+        pieChart.legend.isEnabled = true
         pieChart.isRotationEnabled = true
         pieChart.isHighlightPerTapEnabled = true
     }
@@ -78,7 +90,7 @@ class ReportPlanFragment : Fragment() {
 
         val dataSet = PieDataSet(entries, "Relatório")
         dataSet.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA)
-        dataSet.valueTextSize = 12f
+        dataSet.valueTextSize = 16f
 
         val data = PieData(dataSet)
         pieChart.animateXY(3000, 3000)
