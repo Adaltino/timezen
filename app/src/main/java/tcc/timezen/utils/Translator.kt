@@ -13,6 +13,18 @@ class Translator {
     private fun makeTimeString(hours: Long, minutes: Long, seconds: Long): String =
         String.format("%02d:%02d:%02d", hours, minutes, seconds)
 
+    fun makeTimeStringForReport(minutes: Int): String {
+        return if (minutes >= 60) {
+            String.format(
+                "%02d horas e %02d minutos",
+                toLimitedHours((minutes*1000*60).toLong()),
+                toLimitedMinutes((minutes*1000*60).toLong())
+            )
+        } else {
+            String.format("%02d minutos", minutes)
+        }
+    }
+
     fun getAbsoluteHumanTime(type: String, ms: Long): String {
         var time = "?"
 
@@ -43,10 +55,10 @@ class Translator {
     fun getMsFromMinute(timeInMinutes: Long): Long = timeInMinutes * 1000 * 60
     fun getMsFromHour(timeInHours: Long): Long = timeInHours * 1000 * 60 * 60
 
-    private fun toLimitedSeconds(ms: Long): Long = (ms / 1000) % 60
-    public fun toLimitedMinutes(ms: Long): Long = ms / (1000 * 60) % 60
-    private fun toLimitedHours(ms: Long): Long = ms / (1000 * 60 * 60) % 24
-    private fun toSeconds(ms: Long): Long = (ms / 1000)
-    private fun toMinutes(ms: Long): Long = ms / (1000 * 60)
-    private fun toHours(ms: Long): Long = ms / (1000 * 60 * 60)
+    fun toLimitedSeconds(ms: Long): Long = (ms / 1000) % 60
+    fun toLimitedMinutes(ms: Long): Long = ms / (1000 * 60) % 60
+    fun toLimitedHours(ms: Long): Long = ms / (1000 * 60 * 60) % 24
+    fun toSeconds(ms: Long): Long = (ms / 1000)
+    fun toMinutes(ms: Long): Long = ms / (1000 * 60)
+    fun toHours(ms: Long): Long = ms / (1000 * 60 * 60)
 }
