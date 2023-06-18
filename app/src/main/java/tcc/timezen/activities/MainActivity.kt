@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
 
     override fun onDeleteItemClickView(plan: Plan) {
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage("Tem certeza que quer deletar esse plano planoso terra planoso chamado ${plan.name()}?")
+        builder.setMessage("Tem certeza que quer deletar ${plan.name()}?")
             .setCancelable(false)
-            .setPositiveButton("Yes") { _, _ ->
+            .setNegativeButton("Sim") { dialog, _ ->
                 val id = dbTimezen.getPlanId(plan.name())
                 val idR = dbTimezen.getReportById(plan.name())
                 if (dbTimezen.deletePlanById(id)) {
@@ -68,8 +68,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
                 }
                 replaceFragment(ListPlanFragment.newInstance(this))
             }
-            .setNegativeButton("No") { dialog, _ ->
-                // Dismiss the dialog
+            .setPositiveButton("Não") { dialog, _ ->
                 dialog.dismiss()
             }
         val alert = builder.create()
