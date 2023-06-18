@@ -82,7 +82,7 @@ class Task(
     private fun changeSession() {
         decrementSession()
         invertStageType()
-        listener.onSessionChange(remainingSessions)
+        listener.onSessionChange(remainingSessions, isWorkStage)
     }
 
     private fun decrementSession() {

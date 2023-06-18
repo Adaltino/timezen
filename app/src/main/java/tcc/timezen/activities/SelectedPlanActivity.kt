@@ -45,24 +45,25 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     override fun onStageChange(isOnWorkStage: Boolean) {
         if (isOnWorkStage) {
-            mBinding.tvPlanStage.text = "hora da atividade carai"
+            mBinding.tvPlanStage.text = "Seja produtivo!"
             notifyStageChange("vamos nessa, jovem")
         } else {
-            mBinding.tvPlanStage.text = "descansa nessa porra"
-            notifyStageChange("descança, jovem")
+            mBinding.tvPlanStage.text = "Agora descanse"
+            notifyStageChange("descansa, jovem")
         }
     }
 
-    override fun onSessionChange(sessionsLeft: Int) {
+    override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
         mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes~"
-        if (mBinding.tvPlanStage.text.equals("descansa nessa porra")) {
+        if (!isOnWorkStage) {
             Log.d(TAG, " ID: ${dbTimezen.getPlanId(mPomodoro.plan().name())} " +
                     "Plano: ${mPomodoro.plan().name()} | " +
                     "Work: ${t.toLimitedMinutes(mPomodoro.plan().getWorkTime())} | " +
                     "Break: ${t.toLimitedMinutes(mPomodoro.plan().getBreakTime())} | " +
-                    "Task: ${sessionsLeft} | " +
+                    "Task: $sessionsLeft | " +
                     "Category: ${mPomodoro.plan().category()} | " +
-                    "ImportanceLevel: ${mPomodoro.plan().importanceLevel()}")
+                    "ImportanceLevel: ${mPomodoro.plan().importanceLevel()} | " +
+                    "isWorkStage: $isOnWorkStage")
 
             if (dbTimezen.hasNameExistsInReport(mPomodoro.plan().name())) {
                 val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
@@ -89,7 +90,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
                  * 4 - h 45 - d 1 : update(valor) valor = workValue + workTime // 135 + 45 // workValue = 180
                  * 5 - h 45 - d 1 : update(valor) valor = workValue + workTime // 180 + 45 // workValue = 225
                  */
-                Log.d(TAG,"Sim existe, Report Plano: ${mPomodoro.plan().name()} Work: ${value}")
+                Log.d(TAG,"Sim existe, Report Plano: ${mPomodoro.plan().name()} Work: $value")
             } else {
                 Log.d(TAG,"Não existe, vou criar")
                 dbTimezen.insertReport(
