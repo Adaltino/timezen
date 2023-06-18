@@ -1,7 +1,9 @@
 package tcc.timezen.activities
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -108,6 +110,8 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentTitle("TimeZen")
             .setContentText(notificationText)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setTimeoutAfter(30000)
 
         if (ActivityCompat.checkSelfPermission(
                 this,
