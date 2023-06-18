@@ -57,8 +57,8 @@ class FormPlanActivity : AppCompatActivity() {
             var level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
             val repeat = mBinding.textEditPlanRepeat.text.toString()
 
-            var workLong = t.getMsFromMinute(45)
-            var breakLong = t.getMsFromMinute(10)
+            var workLong = t.getMsFromSecond(2)
+            var breakLong = t.getMsFromSecond(2)
             var repeatInt = 3
 
             if (name.isBlank()) {

@@ -166,6 +166,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
+            mPomodoro.start(this)
             mPomodoro.stop()
             setTextViewTextsOnActivityCreate()
             mBinding.buttonStartPomodoro.text = "iniciar"
