@@ -51,26 +51,30 @@ class FormPlanActivity : AppCompatActivity() {
         mBinding.buttonSavePlan.setOnClickListener {
 
             var name = mBinding.textEditPlanName.text.toString()
-            val workTime = mBinding.textEditPlanWork.text.toString()
-            val breakTime = mBinding.textEditPlanBreak.text.toString()
+            val inputtedWorkTime = mBinding.textEditPlanWork.text.toString()
+            val inputtedBreakTime = mBinding.textEditPlanBreak.text.toString()
             var category = mBinding.autoCompleteTextViewCategoryPlan.text.toString()
             var level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
-            val repeat = mBinding.textEditPlanRepeat.text.toString()
+            val inputtedRepeatQuantity = mBinding.textEditPlanRepeat.text.toString()
 
-            var workLong = t.getMsFromMinute(45)
-            var breakLong = t.getMsFromMinute(10)
+            //use this if you want to insert a plan with seconds worth of duration
+            //for development's sake
+//            var workTimeInMs = t.getMsFromSecond(2)
+//            var breakTimeInMs = t.getMsFromSecond(2)
+            var workTimeInMs = t.getMsFromMinute(45)
+            var breakTimeInMs = t.getMsFromMinute(10)
             var repeatInt = 3
 
             if (name.isBlank()) {
                 name = "Plano pomodoro"
             }
 
-            if (workTime.isNotBlank()) {
-                workLong = t.getMsFromMinute(workTime.toLong())
+            if (inputtedWorkTime.isNotBlank()) {
+                workTimeInMs = t.getMsFromMinute(inputtedWorkTime.toLong())
             }
 
-            if (breakTime.isNotBlank()) {
-                breakLong = t.getMsFromMinute(breakTime.toLong())
+            if (inputtedBreakTime.isNotBlank()) {
+                breakTimeInMs = t.getMsFromMinute(inputtedBreakTime.toLong())
             }
 
             if (category.isBlank()) {
@@ -81,19 +85,18 @@ class FormPlanActivity : AppCompatActivity() {
                 level = "Muito Baixo"
             }
 
-            if (repeat.isNotBlank()) {
-                repeatInt = repeat.toInt()
+            if (inputtedRepeatQuantity.isNotBlank()) {
+                repeatInt = inputtedRepeatQuantity.toInt()
             }
 
             val idCat = db.getCategoryById(category)
             val idLvl = db.getImportanceLevelById(level)
 
-
             if (isEditingPlan) {
                 val id = db.getPlanId(plan!!.name())
-                db.updatePlan(id, name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+                db.updatePlan(id, name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
             } else {
-                db.insertPlan(name, workLong.toInt(), breakLong.toInt(), repeatInt, idCat, idLvl)
+                db.insertPlan(name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
             }
 
             finish()
