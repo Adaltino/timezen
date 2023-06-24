@@ -56,22 +56,11 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
         mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes~"
         if (!isOnWorkStage) {
-            Log.d(TAG, " ID: ${dbTimezen.getPlanId(mPomodoro.plan().name())} " +
-                    "Plano: ${mPomodoro.plan().name()} | " +
-                    "Work: ${t.toLimitedMinutes(mPomodoro.plan().getWorkTime())} | " +
-                    "Break: ${t.toLimitedMinutes(mPomodoro.plan().getBreakTime())} | " +
-                    "Task: $sessionsLeft | " +
-                    "Category: ${mPomodoro.plan().category()} | " +
-                    "ImportanceLevel: ${mPomodoro.plan().importanceLevel()} | " +
-                    "isWorkStage: $isOnWorkStage")
-
             if (dbTimezen.hasNameExistsInReport(mPomodoro.plan().name())) {
                 val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
                 val value = workValue + t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
                 dbTimezen.updateWorkInReport(mPomodoro.plan().name(), value)
-                Log.d(TAG,"Sim existe, Report Plano: ${mPomodoro.plan().name()} Work: $value")
             } else {
-                Log.d(TAG,"Não existe, vou criar")
                 dbTimezen.insertReport(
                     dbTimezen.getPlanId(mPomodoro.plan().name()),
                     mPomodoro.plan().name(),

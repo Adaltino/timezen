@@ -297,6 +297,18 @@ class DBTimezen(context: Context) :
         return count > 0
     }
 
+    fun hasNameExistInPlan(name: String): Boolean {
+        val db = readableDatabase
+        val selectQuery = "SELECT COUNT(*) FROM Plan WHERE pla_name = ?"
+        val selectionArgs = arrayOf(name)
+        val cursor = db.rawQuery(selectQuery, selectionArgs)
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        db.close()
+        return count > 0
+    }
+
     fun insertReport(
         id: Int,
         name: String,
@@ -379,6 +391,17 @@ class DBTimezen(context: Context) :
 
         val whereClause = "rpt_pla_name = ?"
         val whereArgs = arrayOf(name)
+        db.update("Report", values, whereClause, whereArgs)
+        db.close()
+    }
+
+    fun updateNameInReport(name: String, id: Int) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("rpt_pla_name", name)
+        }
+        val whereClause = "rpt_pla_id = ?"
+        val whereArgs = arrayOf(id.toString())
         db.update("Report", values, whereClause, whereArgs)
         db.close()
     }

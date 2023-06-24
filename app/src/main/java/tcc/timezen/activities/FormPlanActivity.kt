@@ -1,7 +1,9 @@
 package tcc.timezen.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import tcc.timezen.R
@@ -50,56 +52,35 @@ class FormPlanActivity : AppCompatActivity() {
 
         mBinding.buttonSavePlan.setOnClickListener {
 
-            var name = mBinding.textEditPlanName.text.toString()
+            val name = mBinding.textEditPlanName.text.toString()
             val inputtedWorkTime = mBinding.textEditPlanWork.text.toString()
             val inputtedBreakTime = mBinding.textEditPlanBreak.text.toString()
-            var category = mBinding.autoCompleteTextViewCategoryPlan.text.toString()
-            var level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
+            val category = mBinding.autoCompleteTextViewCategoryPlan.text.toString()
+            val level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
             val inputtedRepeatQuantity = mBinding.textEditPlanRepeat.text.toString()
 
-            //use this if you want to insert a plan with seconds worth of duration
-            //for development's sake
-//            var workTimeInMs = t.getMsFromSecond(2)
-//            var breakTimeInMs = t.getMsFromSecond(2)
-            var workTimeInMs = t.getMsFromMinute(45)
-            var breakTimeInMs = t.getMsFromMinute(10)
-            var repeatInt = 3
-
-            if (name.isBlank()) {
-                name = "Plano pomodoro"
-            }
-
-            if (inputtedWorkTime.isNotBlank()) {
-                workTimeInMs = t.getMsFromMinute(inputtedWorkTime.toLong())
-            }
-
-            if (inputtedBreakTime.isNotBlank()) {
-                breakTimeInMs = t.getMsFromMinute(inputtedBreakTime.toLong())
-            }
-
-            if (category.isBlank()) {
-                category = "Trabalho"
-            }
-
-            if (level.isBlank()) {
-                level = "Muito Baixo"
-            }
-
-            if (inputtedRepeatQuantity.isNotBlank()) {
-                repeatInt = inputtedRepeatQuantity.toInt()
-            }
-
-            val idCat = db.getCategoryById(category)
-            val idLvl = db.getImportanceLevelById(level)
-
-            if (isEditingPlan) {
-                val id = db.getPlanId(plan!!.name())
-                db.updatePlan(id, name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
+            if (name.isEmpty() || inputtedWorkTime.isEmpty() || inputtedBreakTime.isEmpty() || category.isEmpty() || level.isEmpty() || inputtedRepeatQuantity.isEmpty() ) {
+                Toast.makeText(this, "Por favor preencher todos os campos", Toast.LENGTH_LONG).show()
             } else {
-                db.insertPlan(name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
-            }
+                if (db.hasNameExistInPlan(name) && !(mBinding.toolbarFormPlan.title.equals("Editar Plano"))) {
+                    Toast.makeText(this, "Esse nome já existe, tente novamente", Toast.LENGTH_LONG).show()
+                } else {
+                    val workTimeInMs = t.getMsFromMinute(inputtedWorkTime.toLong())
+                    val breakTimeInMs = t.getMsFromMinute(inputtedBreakTime.toLong())
+                    val repeatInt = inputtedRepeatQuantity.toInt()
+                    val idCat = db.getCategoryById(category)
+                    val idLvl = db.getImportanceLevelById(level)
 
-            finish()
+                    if (isEditingPlan) {
+                        val id = db.getPlanId(plan!!.name())
+                        db.updatePlan(id, name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
+                        db.updateNameInReport(name, id)
+                    } else {
+                        db.insertPlan(name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
+                    }
+                    finish()
+                }
+            }
         }
     }
 
