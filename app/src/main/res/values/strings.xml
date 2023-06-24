@@ -14,7 +14,7 @@
 
     <!-- Tela de Relatório: Report Plans -->
     <string name="text_title_report">Relatório de Planos</string>
-    <string name="text_button_report">Consultar Relatório</string>
+    <string name="text_button_report">Relatório Gráfico</string>
     <string name="textButton_save_plan">Salvar</string>
     <string name="textButton_back">Voltar</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

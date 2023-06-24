@@ -14,8 +14,10 @@
     <dimen name="font_smaller">11sp</dimen>
     <dimen name="font_small">12sp</dimen>
     <dimen name="font_normal">14sp</dimen>
-    <dimen name="font_large">18sp</dimen>
-    <dimen name="font_larger">22sp</dimen>
+<!--    <dimen name="font_large">18sp</dimen>-->
+<!--    <dimen name="font_larger">22sp</dimen>-->
+    <dimen name="font_large">22sp</dimen>
+    <dimen name="font_larger">26sp</dimen>
 
     <!-- Icon sizes  -->
     <dimen name="icon_smaller">16dp</dimen>

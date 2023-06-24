@@ -40,21 +40,27 @@ class ReportPlanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBinding.buttonConsultarReportPlan.setOnClickListener {
-            //mBinding.buttonConsultarReportPlan.visibility = View.GONE
-            //mBinding.textViewTitleReportPlan.visibility = View.GONE
-            //mBinding.pieChartView.visibility = View.VISIBLE
-            //setupPieChart()
-            //loadPieChartData()
-            mBinding.textViewTitleReportPlan.visibility = View.GONE
-            mBinding.buttonConsultarReportPlan.visibility = View.GONE
-            mBinding.recyclerViewReportPlan.visibility = View.VISIBLE
+            if (mBinding.buttonConsultarReportPlan.text.equals("Relatório Normal")) {
+                mBinding.recyclerViewReportPlan.visibility = View.VISIBLE
+                mBinding.pieChartView.visibility = View.GONE
+                mBinding.buttonConsultarReportPlan.text = "Relatório Gráfico"
+            } else {
+                mBinding.recyclerViewReportPlan.visibility = View.GONE
+                mBinding.pieChartView.visibility = View.VISIBLE
 
-            val adapter = ReportRecyclerViewAdapter(dbTimezen.getReportList())
-            mBinding.recyclerViewReportPlan.adapter = adapter
-
-            val layoutManager = LinearLayoutManager(requireContext())
-            mBinding.recyclerViewReportPlan.layoutManager = layoutManager
+                mBinding.buttonConsultarReportPlan.text = "Relatório Normal"
+                setupPieChart()
+                loadPieChartData()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adapter = ReportRecyclerViewAdapter(dbTimezen.getReportList())
+        mBinding.recyclerViewReportPlan.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        mBinding.recyclerViewReportPlan.layoutManager = layoutManager
     }
 
     private fun setupPieChart() {
@@ -90,7 +96,7 @@ class ReportPlanFragment : Fragment() {
 
         val dataSet = PieDataSet(entries, "Relatório")
         dataSet.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA)
-        dataSet.valueTextSize = 16f
+        dataSet.valueTextSize = 18f
 
         val data = PieData(dataSet)
         pieChart.animateXY(3000, 3000)
