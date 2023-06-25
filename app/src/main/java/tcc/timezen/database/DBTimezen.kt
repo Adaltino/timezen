@@ -371,7 +371,7 @@ class DBTimezen(context: Context) :
         return count > 0
     }
 
-    fun getWorkInReport(name: String): Int {
+    fun getWorkTimeFromReport(name: String): Int {
         val db = readableDatabase
         val selectQuery = "SELECT rpt_pla_work FROM Report WHERE rpt_pla_name = ?"
         val selectionArgs = arrayOf(name)

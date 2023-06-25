@@ -1,12 +1,10 @@
 package tcc.timezen.activities
 
-import android.Manifest
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -61,16 +59,21 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
         mBinding.tvSessionLeft.text = String.format(getString(R.string.sessoes_restantes), sessionsLeft.toString())
         if (!isOnWorkStage) {
-            if (dbTimezen.hasNameInReport(mPomodoro.plan().name())) {
-                val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
-                val value = workValue + t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
-                dbTimezen.updateWorkInReport(mPomodoro.plan().name(), value)
+
+            val planName = mPomodoro.plan().name()
+            val planWorkTime = t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
+            val planBreakTime = t.toLimitedMinutes(mPomodoro.plan().getBreakTime()).toInt()
+
+            if (dbTimezen.hasNameInReport(planName)) {
+                val workTime = dbTimezen.getWorkTimeFromReport(planName)
+                val updatedTime = workTime + planWorkTime
+                dbTimezen.updateWorkInReport(planName, updatedTime)
             } else {
                 dbTimezen.insertReport(
-                    dbTimezen.getPlanId(mPomodoro.plan().name()),
-                    mPomodoro.plan().name(),
-                    t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt(),
-                    t.toLimitedMinutes(mPomodoro.plan().getBreakTime()).toInt(),
+                    dbTimezen.getPlanId(planName),
+                    planName,
+                    planWorkTime,
+                    planBreakTime,
                     mPomodoro.plan().getTaskQuantity(),
                     mPomodoro.plan().category(),
                     mPomodoro.plan().importanceLevel()
