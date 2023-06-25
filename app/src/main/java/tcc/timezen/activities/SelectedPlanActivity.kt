@@ -53,7 +53,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
         mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes"
         if (!isOnWorkStage) {
-            if (dbTimezen.hasNameExistsInReport(mPomodoro.plan().name())) {
+            if (dbTimezen.hasNameInReport(mPomodoro.plan().name())) {
                 val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
                 val value = workValue + t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
                 dbTimezen.updateWorkInReport(mPomodoro.plan().name(), value)
@@ -114,9 +114,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     private fun getPlanToDisplay() {
         val extras = intent.extras
-        mPomodoro = Pomodoro(
-            plan = dbTimezen.getPlanById(extras!!.getInt("id")),
-        )
+        mPomodoro = Pomodoro(dbTimezen.getPlanById(extras!!.getInt("id")))
     }
 
     private fun initializeComponents() {

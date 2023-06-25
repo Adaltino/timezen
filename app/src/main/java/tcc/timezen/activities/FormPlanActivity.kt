@@ -1,6 +1,5 @@
 package tcc.timezen.activities
 
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -62,7 +61,7 @@ class FormPlanActivity : AppCompatActivity() {
             if (name.isEmpty() || inputtedWorkTime.isEmpty() || inputtedBreakTime.isEmpty() || category.isEmpty() || level.isEmpty() || inputtedRepeatQuantity.isEmpty() ) {
                 Toast.makeText(this, "Por favor preencher todos os campos", Toast.LENGTH_LONG).show()
             } else {
-                if (db.hasNameExistInPlan(name) && !(mBinding.toolbarFormPlan.title.equals("Editar Plano"))) {
+                if (db.hasNameInPlan(name) && !isEditingPlan) {
                     Toast.makeText(this, "Esse nome já existe, tente novamente", Toast.LENGTH_LONG).show()
                 } else {
                     val workTimeInMs = t.getMsFromMinute(inputtedWorkTime.toLong())
@@ -77,6 +76,7 @@ class FormPlanActivity : AppCompatActivity() {
                         db.updateNameInReport(name, id)
                     } else {
                         db.insertPlan(name, workTimeInMs.toInt(), breakTimeInMs.toInt(), repeatInt, idCat, idLvl)
+                        //db.insertPlan("test plan", 2000, 2000, 2, 3, 3)
                     }
                     finish()
                 }

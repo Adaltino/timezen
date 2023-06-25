@@ -47,6 +47,7 @@ class DBTimezen(context: Context) :
         "INSERT INTO ImportanceLevel (lvl_name) VALUES ('Alto')",
         "INSERT INTO ImportanceLevel (lvl_name) VALUES ('Muito Alto')"
     )
+
     val sqlDropTables = arrayOf(
         "DROP TABLE Category",
         "DROP TABLE ImportanceLevel",
@@ -67,7 +68,7 @@ class DBTimezen(context: Context) :
         "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (5, 'Programar', 150, 15, 3, 'Hobbies', 'Muito Alto')"
     )
 
-    fun insertTeste() {
+    fun insertTest() {
         val db = writableDatabase
         sqlInsertTeste.forEach {
             db.execSQL(it)
@@ -297,7 +298,7 @@ class DBTimezen(context: Context) :
         return count > 0
     }
 
-    fun hasNameExistInPlan(name: String): Boolean {
+    fun hasNameInPlan(name: String): Boolean {
         val db = readableDatabase
         val selectQuery = "SELECT COUNT(*) FROM Plan WHERE pla_name = ?"
         val selectionArgs = arrayOf(name)
@@ -358,7 +359,7 @@ class DBTimezen(context: Context) :
         return deletedRows > 0
     }
 
-    fun hasNameExistsInReport(name: String): Boolean {
+    fun hasNameInReport(name: String): Boolean {
         val db = readableDatabase
         val selectQuery = "SELECT COUNT(*) FROM Report WHERE rpt_pla_name = ?"
         val selectionArgs = arrayOf(name)

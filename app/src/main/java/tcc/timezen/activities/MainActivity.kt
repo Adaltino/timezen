@@ -55,11 +55,11 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
         val builder = AlertDialog.Builder(this@MainActivity)
         builder.setMessage("Tem certeza que quer deletar ${plan.name()}?")
             .setCancelable(false)
-            .setNegativeButton("Sim") { dialog, _ ->
+            .setNegativeButton("Sim") { _, _ ->
                 val id = dbTimezen.getPlanId(plan.name())
                 val idR = dbTimezen.getReportById(plan.name())
                 if (dbTimezen.deletePlanById(id)) {
-                    if (dbTimezen.hasNameExistsInReport(plan.name())) {
+                    if (dbTimezen.hasNameInReport(plan.name())) {
                         dbTimezen.deleteReportById(idR)
                     }
                     Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
