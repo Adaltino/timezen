@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
 
     private fun createNotificationChannel() {
         val name: CharSequence = "TimeZen"
-        val descriptionText = "Put something nice in here"
+        val descriptionText = "Aplicativo gestor de tempo"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel("TimeZen", name, importance).apply {
             description = descriptionText

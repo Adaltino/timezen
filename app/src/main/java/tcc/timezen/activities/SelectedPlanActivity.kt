@@ -1,9 +1,14 @@
 package tcc.timezen.activities
 
 import android.Manifest
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -40,6 +45,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         mBinding.tvCountTime.text = timeString
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStageChange(isOnWorkStage: Boolean) {
         if (isOnWorkStage) {
             val str = getString(R.string.hora_do_foco)
@@ -73,6 +79,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun notifyStageChange(notificationText: String) {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_notifications_24)
@@ -83,7 +90,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.POST_NOTIFICATIONS
+                POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // TODO: Consider calling
@@ -93,6 +100,11 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                println(isGranted)
+            }.launch(POST_NOTIFICATIONS)
             return
         }
 
