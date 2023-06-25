@@ -51,7 +51,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
-        mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes~"
+        mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes"
         if (!isOnWorkStage) {
             if (dbTimezen.hasNameExistsInReport(mPomodoro.plan().name())) {
                 val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
@@ -131,22 +131,30 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
-            mBinding.buttonStartPomodoro.text = "Iniciar"
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("Tem certeza que quer parar e resetar o temporizador?")
-                .setCancelable(false)
-                .setNegativeButton("Sim") { dialog, _ ->
-                    mPomodoro.start(this)
-                    mPomodoro.stop()
-                    setTextViewTextsOnActivityCreate()
-                    dialog.dismiss()
-                }
-                .setPositiveButton("Não") { dialog, _ ->
-                    dialog.dismiss()
-                }
-            val alert = builder.create()
-            alert.show()
+            if (mPomodoro.isRunning()) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Tem certeza que quer parar e resetar o temporizador?")
+                    .setCancelable(false)
+                    .setNegativeButton("Sim") { dialog, _ ->
+                        restartPomodoro()
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("Não") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
+            } else {
+                restartPomodoro()
+            }
         }
+    }
+
+    private fun restartPomodoro() {
+        mBinding.buttonStartPomodoro.text = "Iniciar"
+        mPomodoro.start(this)
+        mPomodoro.stop()
+        setTextViewTextsOnActivityCreate()
     }
 
     override fun onDestroy() {
