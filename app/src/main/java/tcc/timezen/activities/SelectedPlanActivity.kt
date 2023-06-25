@@ -1,13 +1,13 @@
 package tcc.timezen.activities
 
-import android.Manifest
-import android.app.PendingIntent
-import android.content.ContentValues.TAG
-import android.content.Intent
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -43,61 +43,37 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         mBinding.tvCountTime.text = timeString
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStageChange(isOnWorkStage: Boolean) {
         if (isOnWorkStage) {
-            mBinding.tvPlanStage.text = "Seja produtivo!"
-            notifyStageChange("vamos nessa, jovem")
+            val str = getString(R.string.hora_do_foco)
+            mBinding.tvPlanStage.text = str
+            notifyStageChange(str)
         } else {
-            mBinding.tvPlanStage.text = "Agora descanse"
-            notifyStageChange("descansa, jovem")
+            val str = getString(R.string.agora_descanse)
+            mBinding.tvPlanStage.text = str
+            notifyStageChange(str)
         }
     }
 
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
-        mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes~"
+        mBinding.tvSessionLeft.text = String.format(getString(R.string.sessoes_restantes), sessionsLeft.toString())
         if (!isOnWorkStage) {
-            Log.d(TAG, " ID: ${dbTimezen.getPlanId(mPomodoro.plan().name())} " +
-                    "Plano: ${mPomodoro.plan().name()} | " +
-                    "Work: ${t.toLimitedMinutes(mPomodoro.plan().getWorkTime())} | " +
-                    "Break: ${t.toLimitedMinutes(mPomodoro.plan().getBreakTime())} | " +
-                    "Task: $sessionsLeft | " +
-                    "Category: ${mPomodoro.plan().category()} | " +
-                    "ImportanceLevel: ${mPomodoro.plan().importanceLevel()} | " +
-                    "isWorkStage: $isOnWorkStage")
 
-            if (dbTimezen.hasNameExistsInReport(mPomodoro.plan().name())) {
-                val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
-                val value = workValue + t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
-                dbTimezen.updateWorkInReport(mPomodoro.plan().name(), value)
-                /**
-                 * 1 - h 1 - d 1 : insert correr + workTime // 1 // workValue = 1
-                 * 2 - h 1 - d 1 : update(valor) valor = workValue + workTime // 1 + 1 // workValue = 2
-                 * 3 - h 1 - d 1 : update(valor) valor = workValue + workTime // 2 + 1 // workValue = 3
-                 * 4 - h 1 - d 1 : update(valor) valor = workValue + workTime // 3 + 1 // workValue = 4
-                 * 5 - h 1 - d 1 : update(valor) valor = workValue + workTime // 4 + 1 // workValue = 5
-                 */
-                /**
-                 * 1 - h 1 - d 1 : update(valor) valor = workValue + workTime // 5 + 1 // workValue = 6
-                 * 2 - h 1 - d 1 : update(valor) valor = workValue + workTime // 6 + 1 // workValue = 7
-                 * 3 - h 1 - d 1 : update(valor) valor = workValue + workTime // 7 + 1 // workValue = 8
-                 * 4 - h 1 - d 1 : update(valor) valor = workValue + workTime // 8 + 1 // workValue = 9
-                 * 5 - h 1 - d 1 : update(valor) valor = workValue + workTime // 9 + 1 // workValue = 10
-                 */
-                /**
-                 * 1 - h 45 - d 1 : insert correr + workTime // 45 // workValue = 45
-                 * 2 - h 45 - d 1 : update(valor) valor = workValue + workTime // 45 + 45 // workValue = 90
-                 * 3 - h 45 - d 1 : update(valor) valor = workValue + workTime // 90 + 45 // workValue = 135
-                 * 4 - h 45 - d 1 : update(valor) valor = workValue + workTime // 135 + 45 // workValue = 180
-                 * 5 - h 45 - d 1 : update(valor) valor = workValue + workTime // 180 + 45 // workValue = 225
-                 */
-                Log.d(TAG,"Sim existe, Report Plano: ${mPomodoro.plan().name()} Work: $value")
+            val planName = mPomodoro.plan().name()
+            val planWorkTime = t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt()
+            val planBreakTime = t.toLimitedMinutes(mPomodoro.plan().getBreakTime()).toInt()
+
+            if (dbTimezen.hasNameInReport(planName)) {
+                val workTime = dbTimezen.getWorkTimeFromReport(planName)
+                val updatedTime = workTime + planWorkTime
+                dbTimezen.updateWorkInReport(planName, updatedTime)
             } else {
-                Log.d(TAG,"Não existe, vou criar")
                 dbTimezen.insertReport(
-                    dbTimezen.getPlanId(mPomodoro.plan().name()),
-                    mPomodoro.plan().name(),
-                    t.toLimitedMinutes(mPomodoro.plan().getWorkTime()).toInt(),
-                    t.toLimitedMinutes(mPomodoro.plan().getBreakTime()).toInt(),
+                    dbTimezen.getPlanId(planName),
+                    planName,
+                    planWorkTime,
+                    planBreakTime,
                     mPomodoro.plan().getTaskQuantity(),
                     mPomodoro.plan().category(),
                     mPomodoro.plan().importanceLevel()
@@ -106,6 +82,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun notifyStageChange(notificationText: String) {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_notifications_24)
@@ -116,7 +93,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
         if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.POST_NOTIFICATIONS
+                POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // TODO: Consider calling
@@ -126,6 +103,11 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                println(isGranted)
+            }.launch(POST_NOTIFICATIONS)
             return
         }
 
@@ -137,39 +119,57 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     override fun onFinish() {
-        mBinding.tvPlanStage.text = "Pomodoro terminado"
+        mBinding.tvPlanStage.text = getString(R.string.pomodoro_terminado)
         mBinding.tvCountTime.text = t.timeStringFromLong(0)
     }
 
     private fun setTextViewTextsOnActivityCreate() {
         mBinding.tvPlanName.text = mPomodoro.plan().name()
         mBinding.tvCountTime.text = t.timeStringFromLong(mPomodoro.plan().getWorkTime())
-        mBinding.tvSessionLeft.text = "${mPomodoro.plan().getTaskQuantity()} sessoes restantes~"
+        mBinding.tvSessionLeft.text = String.format(getString(R.string.sessoes_restantes), mPomodoro.plan().getTaskQuantity())
     }
 
     private fun getPlanToDisplay() {
         val extras = intent.extras
-        mPomodoro = Pomodoro(
-            plan = dbTimezen.getPlanById(extras!!.getInt("id")),
-        )
+        mPomodoro = Pomodoro(dbTimezen.getPlanById(extras!!.getInt("id")))
     }
 
     private fun initializeComponents() {
         mBinding.buttonStartPomodoro.setOnClickListener {
             if (!mPomodoro.isRunning()) {
                 mPomodoro.start(this)
-                mBinding.buttonStartPomodoro.text = "pausar"
+                mBinding.buttonStartPomodoro.text = getString(R.string.pausar)
             } else {
                 mPomodoro.pause()
-                mBinding.buttonStartPomodoro.text = "iniciar"
+                mBinding.buttonStartPomodoro.text = getString(R.string.iniciar)
             }
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
-            mPomodoro.stop()
-            setTextViewTextsOnActivityCreate()
-            mBinding.buttonStartPomodoro.text = "iniciar"
+            if (mPomodoro.isRunning()) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.dialogue_reset_plan))
+                    .setCancelable(false)
+                    .setNegativeButton("Sim") { dialog, _ ->
+                        restartPomodoro()
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("Não") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
+            } else {
+                restartPomodoro()
+            }
         }
+    }
+
+    private fun restartPomodoro() {
+        mBinding.buttonStartPomodoro.text = getString(R.string.iniciar)
+        mPomodoro.start(this)
+        mPomodoro.stop()
+        setTextViewTextsOnActivityCreate()
     }
 
     override fun onDestroy() {

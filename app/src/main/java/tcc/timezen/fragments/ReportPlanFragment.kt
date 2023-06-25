@@ -6,28 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.BarChart
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentReportPlanBinding
+import tcc.timezen.recyclerview.adapter.ReportRecyclerViewAdapter
 
 class ReportPlanFragment : Fragment() {
     private lateinit var mBinding: FragmentReportPlanBinding
     private lateinit var dbTimezen: DBTimezen
     private lateinit var pieChart: PieChart
 
+    private var isShowingReportList = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mBinding = FragmentReportPlanBinding.inflate(inflater, container, false)
         pieChart = mBinding.pieChartView
         dbTimezen = DBTimezen(requireContext())
@@ -37,18 +36,34 @@ class ReportPlanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBinding.buttonConsultarReportPlan.setOnClickListener {
-            mBinding.buttonConsultarReportPlan.visibility = View.GONE
-            mBinding.textViewTitleReportPlan.visibility = View.GONE
-            mBinding.pieChartView.visibility = View.VISIBLE
-            setupPieChart()
-            loadPieChartData()
+            isShowingReportList = !isShowingReportList
+            if (isShowingReportList) {
+                mBinding.recyclerViewReportPlan.visibility = View.VISIBLE
+                mBinding.pieChartView.visibility = View.GONE
+                mBinding.buttonConsultarReportPlan.text = getString(R.string.relatorio_em_grafico)
+            } else {
+                mBinding.recyclerViewReportPlan.visibility = View.GONE
+                mBinding.pieChartView.visibility = View.VISIBLE
+
+                mBinding.buttonConsultarReportPlan.text = getString(R.string.relatorio_em_lista)
+                setupPieChart()
+                loadPieChartData()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adapter = ReportRecyclerViewAdapter(dbTimezen.getReportList())
+        mBinding.recyclerViewReportPlan.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext())
+        mBinding.recyclerViewReportPlan.layoutManager = layoutManager
     }
 
     private fun setupPieChart() {
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.legend.isEnabled = false
+        pieChart.legend.isEnabled = true
         pieChart.isRotationEnabled = true
         pieChart.isHighlightPerTapEnabled = true
     }
@@ -78,7 +93,7 @@ class ReportPlanFragment : Fragment() {
 
         val dataSet = PieDataSet(entries, "Relatório")
         dataSet.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA)
-        dataSet.valueTextSize = 12f
+        dataSet.valueTextSize = 18f
 
         val data = PieData(dataSet)
         pieChart.animateXY(3000, 3000)

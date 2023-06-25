@@ -62,7 +62,7 @@
                     android:id="@+id/text_edit_plan_work"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tempo do Plano"
+                    android:hint="@string/tempo_de_foco"
                     android:imeOptions="actionDone"
                     android:inputType="number" />
 

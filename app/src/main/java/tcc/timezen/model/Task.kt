@@ -23,7 +23,7 @@ class Task(
 
     /*
 
-        mental note because I have alzheimer's:
+        mental note for self:
 
             1 session is made up of two timers: work and break. ( plan.getTasksQuantity() )
             both work and break are called stages

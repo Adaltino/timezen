@@ -53,13 +53,13 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
 
     override fun onDeleteItemClickView(plan: Plan) {
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage("Tem certeza que quer deletar esse plano planoso terra planoso chamado ${plan.name()}?")
+        builder.setMessage("Tem certeza que quer deletar ${plan.name()}?")
             .setCancelable(false)
-            .setPositiveButton("Yes") { _, _ ->
+            .setNegativeButton("Sim") { _, _ ->
                 val id = dbTimezen.getPlanId(plan.name())
                 val idR = dbTimezen.getReportById(plan.name())
                 if (dbTimezen.deletePlanById(id)) {
-                    if (dbTimezen.hasNameExistsInReport(plan.name())) {
+                    if (dbTimezen.hasNameInReport(plan.name())) {
                         dbTimezen.deleteReportById(idR)
                     }
                     Toast.makeText(this, "Plano ${plan.name()} Deletado", Toast.LENGTH_SHORT).show()
@@ -68,8 +68,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
                 }
                 replaceFragment(ListPlanFragment.newInstance(this))
             }
-            .setNegativeButton("No") { dialog, _ ->
-                // Dismiss the dialog
+            .setPositiveButton("Não") { dialog, _ ->
                 dialog.dismiss()
             }
         val alert = builder.create()
@@ -100,7 +99,7 @@ class MainActivity : AppCompatActivity(), ItemViewClickListener {
 
     private fun createNotificationChannel() {
         val name: CharSequence = "TimeZen"
-        val descriptionText = "Put something nice in here"
+        val descriptionText = "Aplicativo gestor de tempo"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel("TimeZen", name, importance).apply {
             description = descriptionText
