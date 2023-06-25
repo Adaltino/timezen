@@ -22,7 +22,7 @@ class ListPlanFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mBinding = FragmentListPlanBinding.inflate(inflater, container, false)
 
         mBinding.fabAddNewPlan.setOnClickListener {

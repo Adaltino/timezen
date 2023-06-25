@@ -42,16 +42,18 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     override fun onStageChange(isOnWorkStage: Boolean) {
         if (isOnWorkStage) {
-            mBinding.tvPlanStage.text = "Hora do foco!"
-            notifyStageChange("Hora do foco!")
+            val str = getString(R.string.hora_do_foco)
+            mBinding.tvPlanStage.text = str
+            notifyStageChange(str)
         } else {
-            mBinding.tvPlanStage.text = "Agora descanse."
-            notifyStageChange("Agora descanse.")
+            val str = getString(R.string.agora_descanse)
+            mBinding.tvPlanStage.text = str
+            notifyStageChange(str)
         }
     }
 
     override fun onSessionChange(sessionsLeft: Int, isOnWorkStage: Boolean) {
-        mBinding.tvSessionLeft.text = "${sessionsLeft} sessoes restantes"
+        mBinding.tvSessionLeft.text = String.format(getString(R.string.sessoes_restantes), sessionsLeft.toString())
         if (!isOnWorkStage) {
             if (dbTimezen.hasNameInReport(mPomodoro.plan().name())) {
                 val workValue = dbTimezen.getWorkInReport(mPomodoro.plan().name())
@@ -102,14 +104,14 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     override fun onFinish() {
-        mBinding.tvPlanStage.text = "Pomodoro terminado"
+        mBinding.tvPlanStage.text = getString(R.string.pomodoro_terminado)
         mBinding.tvCountTime.text = t.timeStringFromLong(0)
     }
 
     private fun setTextViewTextsOnActivityCreate() {
         mBinding.tvPlanName.text = mPomodoro.plan().name()
         mBinding.tvCountTime.text = t.timeStringFromLong(mPomodoro.plan().getWorkTime())
-        mBinding.tvSessionLeft.text = "${mPomodoro.plan().getTaskQuantity()} sessoes restantes~"
+        mBinding.tvSessionLeft.text = String.format(getString(R.string.sessoes_restantes), mPomodoro.plan().getTaskQuantity())
     }
 
     private fun getPlanToDisplay() {
@@ -121,17 +123,17 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         mBinding.buttonStartPomodoro.setOnClickListener {
             if (!mPomodoro.isRunning()) {
                 mPomodoro.start(this)
-                mBinding.buttonStartPomodoro.text = "Pausar"
+                mBinding.buttonStartPomodoro.text = getString(R.string.pausar)
             } else {
                 mPomodoro.pause()
-                mBinding.buttonStartPomodoro.text = "Iniciar"
+                mBinding.buttonStartPomodoro.text = getString(R.string.iniciar)
             }
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
             if (mPomodoro.isRunning()) {
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage("Tem certeza que quer parar e resetar o temporizador?")
+                builder.setMessage(getString(R.string.dialogue_reset_plan))
                     .setCancelable(false)
                     .setNegativeButton("Sim") { dialog, _ ->
                         restartPomodoro()
@@ -149,7 +151,7 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
     }
 
     private fun restartPomodoro() {
-        mBinding.buttonStartPomodoro.text = "Iniciar"
+        mBinding.buttonStartPomodoro.text = getString(R.string.iniciar)
         mPomodoro.start(this)
         mPomodoro.stop()
         setTextViewTextsOnActivityCreate()

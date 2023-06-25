@@ -49,7 +49,7 @@
             android:id="@+id/button_consultar_report_plan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_button_report"
+            android:text="@string/relatorio_em_grafico"
             android:textSize="@dimen/font_larger"
             android:visibility="visible"
             android:layout_margin="@dimen/spacing_normal"

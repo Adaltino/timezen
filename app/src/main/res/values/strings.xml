@@ -20,6 +20,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_selected_plan">SelectedPlanActivity</string>
 
+    <string name="sessoes_restantes">%s repetições restantes</string>
+
     <string name="button_stop_plan">Parar</string>
     <string name="timer_finished">00:00:00</string>
     <string name="text_title_burnout">Síndrome de Burnout</string>
@@ -29,4 +31,14 @@
     <string name="iniciar_temporizador">Iniciar Temporizador</string>
     <string name="nome_do_plano_filler">Nome do Plano</string>
     <string name="tempo_de_foco">Tempo de Foco</string>
+    <string name="pomodoro_terminado">Pomodoro terminado</string>
+    <string name="agora_descanse">Agora descanse.</string>
+    <string name="hora_do_foco">Hora do foco!</string>
+    <string name="pausar">Pausar</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="finalizar_edicao">Finalizar edição</string>
+    <string name="editar_plano">Editar Plano</string>
+    <string name="relatorio_em_grafico">Relatório em gráfico</string>
+    <string name="relatorio_em_lista">Relatório em lista</string>
+    <string name="dialogue_reset_plan">Tem certeza que quer parar e resetar o temporizador?</string>
 </resources>

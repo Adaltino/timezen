@@ -7,19 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
 import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentReportPlanBinding
-import tcc.timezen.recyclerview.adapter.PlanRecyclerViewAdapter
 import tcc.timezen.recyclerview.adapter.ReportRecyclerViewAdapter
 
 class ReportPlanFragment : Fragment() {
@@ -27,10 +21,12 @@ class ReportPlanFragment : Fragment() {
     private lateinit var dbTimezen: DBTimezen
     private lateinit var pieChart: PieChart
 
+    private var isShowingReportList = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mBinding = FragmentReportPlanBinding.inflate(inflater, container, false)
         pieChart = mBinding.pieChartView
         dbTimezen = DBTimezen(requireContext())
@@ -40,15 +36,16 @@ class ReportPlanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBinding.buttonConsultarReportPlan.setOnClickListener {
-            if (mBinding.buttonConsultarReportPlan.text.equals("Relatório Normal")) {
+            isShowingReportList = !isShowingReportList
+            if (isShowingReportList) {
                 mBinding.recyclerViewReportPlan.visibility = View.VISIBLE
                 mBinding.pieChartView.visibility = View.GONE
-                mBinding.buttonConsultarReportPlan.text = "Relatório Gráfico"
+                mBinding.buttonConsultarReportPlan.text = getString(R.string.relatorio_em_grafico)
             } else {
                 mBinding.recyclerViewReportPlan.visibility = View.GONE
                 mBinding.pieChartView.visibility = View.VISIBLE
 
-                mBinding.buttonConsultarReportPlan.text = "Relatório Normal"
+                mBinding.buttonConsultarReportPlan.text = getString(R.string.relatorio_em_lista)
                 setupPieChart()
                 loadPieChartData()
             }
