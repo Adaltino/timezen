@@ -47,5 +47,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:contentDescription="@string/text_description_fab"/>
 
+        <ImageView
+            android:id="@+id/iv_tz_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView_title_list_plan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/logo_timezen_foreground" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

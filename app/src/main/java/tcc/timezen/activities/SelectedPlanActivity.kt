@@ -1,13 +1,10 @@
 package tcc.timezen.activities
 
 import android.Manifest
-import android.app.PendingIntent
-import android.content.ContentValues.TAG
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -45,11 +42,11 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
 
     override fun onStageChange(isOnWorkStage: Boolean) {
         if (isOnWorkStage) {
-            mBinding.tvPlanStage.text = "Seja produtivo!"
-            notifyStageChange("vamos nessa, jovem")
+            mBinding.tvPlanStage.text = "Hora do foco!"
+            notifyStageChange("Hora do foco!")
         } else {
-            mBinding.tvPlanStage.text = "Agora descanse"
-            notifyStageChange("descansa, jovem")
+            mBinding.tvPlanStage.text = "Agora descanse."
+            notifyStageChange("Agora descanse.")
         }
     }
 
@@ -126,18 +123,29 @@ class SelectedPlanActivity : AppCompatActivity(), TimerListener {
         mBinding.buttonStartPomodoro.setOnClickListener {
             if (!mPomodoro.isRunning()) {
                 mPomodoro.start(this)
-                mBinding.buttonStartPomodoro.text = "pausar"
+                mBinding.buttonStartPomodoro.text = "Pausar"
             } else {
                 mPomodoro.pause()
-                mBinding.buttonStartPomodoro.text = "iniciar"
+                mBinding.buttonStartPomodoro.text = "Iniciar"
             }
         }
 
         mBinding.buttonResetPomodoro.setOnClickListener {
-            mPomodoro.start(this)
-            mPomodoro.stop()
-            setTextViewTextsOnActivityCreate()
-            mBinding.buttonStartPomodoro.text = "iniciar"
+            mBinding.buttonStartPomodoro.text = "Iniciar"
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Tem certeza que quer parar e resetar o temporizador?")
+                .setCancelable(false)
+                .setNegativeButton("Sim") { dialog, _ ->
+                    mPomodoro.start(this)
+                    mPomodoro.stop()
+                    setTextViewTextsOnActivityCreate()
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Não") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
         }
     }
 

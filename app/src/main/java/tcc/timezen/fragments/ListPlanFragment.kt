@@ -41,6 +41,7 @@ class ListPlanFragment(
         if (dbTimezen.hasPlan()) {
             mBinding.textViewTitleListPlan.visibility = View.GONE
             mBinding.recyclerViewListPlan.visibility = View.VISIBLE
+            mBinding.ivTzLogo.visibility = View.GONE
 
             val adapter = PlanRecyclerViewAdapter(dbTimezen.getPlanList(), itemViewClickListener)
             mBinding.recyclerViewListPlan.adapter = adapter
@@ -50,11 +51,8 @@ class ListPlanFragment(
         } else {
             mBinding.recyclerViewListPlan.visibility = View.GONE
             mBinding.textViewTitleListPlan.visibility = View.VISIBLE
+            mBinding.ivTzLogo.visibility = View.VISIBLE
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     companion object {

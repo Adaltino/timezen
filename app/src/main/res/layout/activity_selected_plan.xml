@@ -10,7 +10,7 @@
         android:id="@+id/tv_plan_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome do Plano"
+        android:text="@string/nome_do_plano_filler"
         android:textStyle="bold"
         android:textSize="@dimen/font_larger"
         android:gravity="center"
@@ -25,8 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="iniciar plano"
-        android:backgroundTint="@color/blue_700"
+        android:text="@string/iniciar_temporizador"
+        android:backgroundTint="@color/blue_500"
         android:textSize="@dimen/font_larger"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/timer_finished"
-        android:textSize="32sp"
+        android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -51,14 +51,15 @@
 
     <Button
         android:id="@+id/button_reset_pomodoro"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:backgroundTint="@color/blue_700"
+        android:backgroundTint="@color/red_500"
         android:text="@string/button_stop_plan"
         android:textSize="@dimen/font_larger"
-        app:layout_constraintEnd_toEndOf="@+id/button_start_pomodoro"
-        app:layout_constraintStart_toStartOf="@+id/button_start_pomodoro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_start_pomodoro" />
 
     <TextView
@@ -73,18 +74,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_plan_name"
         app:layout_constraintVertical_bias="0.654"
-        tools:text="como bota � no android" />
+        tools:text="Descanse" />
 
     <TextView
         android:id="@+id/tv_session_left"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="@dimen/font_large"
+        android:textSize="@dimen/font_larger"
         app:layout_constraintBottom_toTopOf="@+id/button_start_pomodoro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_count_time"
-        tools:text="sess�o 1 de 3" />
+        tools:text="3 sess�es restantes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
