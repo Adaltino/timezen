@@ -67,10 +67,6 @@ class ReportPlanFragment : Fragment() {
             val selectedType = parent.getItemAtPosition(position) as String
             changeChartColorsByType(pieChart, selectedType)
         }
-
-        mBinding.autoCompleteTextViewColor.setOnDismissListener {
-            resetChartColor(pieChart)
-        }
     }
 
     override fun onResume() {
@@ -112,11 +108,8 @@ class ReportPlanFragment : Fragment() {
         }
         dataCursor.close()
 
-        if (pieChart.data != null && pieChart.data.dataSets.isNotEmpty()) {
-            resetChartColor(pieChart)
-        }
-
         val dataSet = PieDataSet(entries, "Relatório")
+        dataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
         dataSet.valueFormatter = PercentFormatter(pieChart)
         dataSet.valueTextSize = 18f
 
