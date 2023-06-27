@@ -19,6 +19,7 @@ import tcc.timezen.R
 import tcc.timezen.database.DBTimezen
 import tcc.timezen.databinding.FragmentReportPlanBinding
 import tcc.timezen.recyclerview.adapter.ReportRecyclerViewAdapter
+import tcc.timezen.utils.ColorTimezen
 
 class ReportPlanFragment : Fragment() {
     private lateinit var mBinding: FragmentReportPlanBinding
@@ -35,7 +36,7 @@ class ReportPlanFragment : Fragment() {
         pieChart = mBinding.pieChartView
         dbTimezen = DBTimezen(requireContext())
 
-        val daltonismTypes = arrayOf("Normal", "Protanopia", "Deuteranopia", "Tritanopia")
+        val daltonismTypes = arrayOf("Normal", "Protanomalia", "Deuteranomalia", "Tritanomalia", "Protanopia", "Deuteranopia", "Tritanopia", "Monochromacia", "Monocromacia de Cone Azul")
         val adapterColor = ArrayAdapter(requireContext(), R.layout.item_dropdown, daltonismTypes)
         mBinding.autoCompleteTextViewColor.setAdapter(adapterColor)
 
@@ -109,7 +110,7 @@ class ReportPlanFragment : Fragment() {
         dataCursor.close()
 
         val dataSet = PieDataSet(entries, "Relatório")
-        dataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
+        dataSet.colors = ColorTimezen.NORMAL
         dataSet.valueFormatter = PercentFormatter(pieChart)
         dataSet.valueTextSize = 18f
 
@@ -121,21 +122,20 @@ class ReportPlanFragment : Fragment() {
 
     fun changeChartColorsByType(chart: PieChart, daltonismType: String) {
         val colors = when (daltonismType) {
-            "Normal" -> ColorTemplate.COLORFUL_COLORS.asList()
-            "Protanopia" -> ColorTemplate.MATERIAL_COLORS.asList()
-            "Deuteranopia" -> ColorTemplate.JOYFUL_COLORS.asList()
-            "Tritanopia" -> ColorTemplate.LIBERTY_COLORS.asList()
-            else -> ColorTemplate.COLORFUL_COLORS.asList()
+            "Normal" -> ColorTimezen.NORMAL
+            "Protanomalia" -> ColorTimezen.PROTANOMALY
+            "Deuteranomalia" -> ColorTimezen.DEUTERANOMALY
+            "Tritanomalia" -> ColorTimezen.TRITANOMALY
+            "Protanopia" -> ColorTimezen.PROTANOPIA
+            "Deuteranopia" -> ColorTimezen.DEUTERANOPIA
+            "Tritanopia" -> ColorTimezen.TRITANOPIA
+            "Monochromacia" -> ColorTimezen.MONOCHROMACY
+            "Monocromacia de Cone Azul" -> ColorTimezen.BLUE_CONE_MONOCHROMACY
+            else -> ColorTimezen.NORMAL
         }
 
         val dataSet = chart.data.dataSets[0] as PieDataSet
         dataSet.colors = colors
-        chart.invalidate()
-    }
-
-    fun resetChartColor(chart: PieChart) {
-        val dataSet = chart.data.dataSets[0] as PieDataSet
-        dataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
         chart.invalidate()
     }
 
