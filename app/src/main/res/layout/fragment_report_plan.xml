@@ -10,15 +10,49 @@
         android:layout_height="match_parent"
         tools:context=".fragments.ReportPlanFragment" >
 
+        <Button
+            android:id="@+id/button_consultar_report_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/relatorio_em_grafico"
+            android:textSize="@dimen/font_larger"
+            android:visibility="visible"
+            android:layout_margin="@dimen/spacing_normal"
+            android:backgroundTint="@color/blue_500"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInput_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_normal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/button_consultar_report_plan"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="Cor do Gráfico"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChartView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/button_consultar_report_plan"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInput_color" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_report_plan"
@@ -43,19 +77,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/button_consultar_report_plan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/relatorio_em_grafico"
-            android:textSize="@dimen/font_larger"
-            android:visibility="visible"
-            android:layout_margin="@dimen/spacing_normal"
-            android:backgroundTint="@color/blue_500"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
