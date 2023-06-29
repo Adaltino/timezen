@@ -53,8 +53,6 @@ class ListPlanFragment(
                 val category = mBinding.autoCompleteTextViewCategoryPlan.text.toString()
                 val level = mBinding.autoCompleteTextViewImportanceLevelPlan.text.toString()
 
-                Toast.makeText(requireContext(), "${category}, ${level}", Toast.LENGTH_SHORT).show()
-
                 val newAdapter = PlanRecyclerViewAdapter(dbTimezen.getFilterPlans(category, level), itemViewClickListener)
                 mBinding.recyclerViewListPlan.adapter = newAdapter
 

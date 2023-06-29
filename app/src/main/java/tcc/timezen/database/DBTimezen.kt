@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import tcc.timezen.model.Plan
 import tcc.timezen.model.PomodoroTimer
 import tcc.timezen.model.Report
+import tcc.timezen.utils.Translator
 
 class DBTimezen(context: Context) :
     SQLiteOpenHelper(context, "timezen.db", null, 1) {
@@ -54,33 +55,45 @@ class DBTimezen(context: Context) :
         "DROP TABLE Plan",
         "DROP TABLE Report"
     )
+    val t = Translator()
 
     val sqlInsertTeste = arrayOf(
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Correr', 1800000, 600000, 5, 4, 1)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (1, 'Correr', 150, 10, 5, 'Atividades Físicas', 'Muito Baixo')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Ler', 900000, 300000, 3, 3, 1)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (2, 'Ler', 45, 5, 3, 'Hobbies', 'Muito Baixo')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Geografia', 1200000, 900000, 2, 2, 4)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (3, 'Geografia', 40, 15, 2, 'Estudos', 'Alto')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Jogar', 2400000, 600000, 2, 3, 3)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (4, 'Jogar', 80, 10, 2, 'Hobbies', 'Médio')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Programar', 3000000, 900000, 3, 3, 5)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (5, 'Programar', 150, 15, 3, 'Hobbies', 'Muito Alto')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('C#', 1800000, 600000, 5, 4, 1)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (6, 'C#', 150, 10, 5, 'Atividades Físicas', 'Muito Baixo')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Nadar', 900000, 300000, 3, 3, 1)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (7, 'Nadar', 45, 5, 3, 'Hobbies', 'Muito Baixo')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Escrever', 1200000, 900000, 2, 2, 4)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (8, 'Escrever', 40, 15, 2, 'Estudos', 'Alto')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Php', 2400000, 600000, 2, 3, 3)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (9, 'Php', 80, 10, 2, 'Hobbies', 'Médio')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Português', 3000000, 900000, 3, 3, 5)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (10, 'Português', 150, 15, 3, 'Hobbies', 'Muito Alto')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('C++', 2400000, 600000, 2, 3, 3)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (11, 'C++', 80, 10, 2, 'Hobbies', 'Médio')",
-        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Corrigir Provas', 3000000, 900000, 3, 3, 5)",
-        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (12, 'Corrigir Provas', 150, 15, 3, 'Hobbies', 'Muito Alto')"
-
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Correr', ${t.getMsFromMinute(30)}, ${t.getMsFromMinute(10)}, 5, 4, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (1, 'Correr', 300, 10, 5, 'Atividades Físicas', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Ler', ${t.getMsFromMinute(35)}, ${t.getMsFromMinute(15)}, 3, 3, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (2, 'Ler', 210, 15, 3, 'Hobbies', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Inglês', ${t.getMsFromMinute(40)}, ${t.getMsFromMinute(5)}, 2, 2, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (3, 'Inglês', 400, 5, 2, 'Estudos', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Jogar', ${t.getMsFromMinute(25)}, ${t.getMsFromMinute(20)}, 2, 3, 3)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (4, 'Jogar', 100, 20, 2, 'Hobbies', 'Médio')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Programar', ${t.getMsFromMinute(50)}, ${t.getMsFromMinute(5)}, 3, 3, 5)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (5, 'Programar', 600, 5, 2, 'Hobbies', 'Muito Alto')"
+        )
+    val sqlInsertDecio = arrayOf(
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Lua', ${t.getMsFromMinute(30)}, ${t.getMsFromMinute(10)}, 5, 1, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (1, 'Lua', 90, 10, 3, 'Trabalho', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Química', ${t.getMsFromMinute(20)}, ${t.getMsFromMinute(5)}, 3, 2, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (2, 'Química', 60, 5, 3, 'Estudos', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Relatório', ${t.getMsFromMinute(45)}, ${t.getMsFromMinute(15)}, 2, 1, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (3, 'Relatório', 90, 15, 2, 'Trabalho', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Correr', ${t.getMsFromMinute(35)}, ${t.getMsFromMinute(10)}, 2, 4, 3)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (4, 'Correr', 175, 10, 5, 'Atividades Físicas', 'Médio')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Programar', ${t.getMsFromMinute(50)}, ${t.getMsFromMinute(15)}, 3, 2, 5)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (5, 'Programar', 150, 15, 3, 'Estudos', 'Muito Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Matemática', ${t.getMsFromMinute(30)}, ${t.getMsFromMinute(10)}, 5, 2, 3)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (6, 'Matemática', 150, 10, 5, 'Estudos', 'Médio')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Linux', ${t.getMsFromMinute(30)}, ${t.getMsFromMinute(5)}, 3, 1, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (7, 'Linux', 300, 5, 5, 'Trabalho', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Elixir', ${t.getMsFromMinute(45)}, ${t.getMsFromMinute(15)}, 2, 1, 4)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (8, 'Elixir', 180, 15, 2, 'Trabalho', 'Alto')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Jogar', ${t.getMsFromMinute(25)}, ${t.getMsFromMinute(10)}, 2, 3, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (9, 'Jogar', 50, 10, 2, 'Hobbies', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Rede Social', ${t.getMsFromMinute(10)}, ${t.getMsFromMinute(15)}, 3, 3, 1)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (10, 'Rede Social', 40, 15, 2, 'Hobbies', 'Muito Baixo')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('C++', ${t.getMsFromMinute(35)}, ${t.getMsFromMinute(10)}, 2, 2, 3)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (11, 'C++', 140, 10, 2, 'Estudos', 'Médio')",
+        "INSERT INTO Plan (pla_name, pla_work, pla_break, pla_task, pla_cat_id, pla_lvl_id) VALUES ('Provas', ${t.getMsFromMinute(50)}, ${t.getMsFromMinute(15)}, 3, 2, 5)",
+        "INSERT INTO Report (rpt_pla_id, rpt_pla_name, rpt_pla_work, rpt_pla_break, rpt_pla_task, rpt_pla_cat_name, rpt_pla_lvl_name) VALUES (12, 'Provas', 500, 15, 2, 'Estudos', 'Muito Alto')"
     )
 
     fun insertTest() {
