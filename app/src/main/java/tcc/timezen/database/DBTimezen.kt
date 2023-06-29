@@ -422,6 +422,57 @@ class DBTimezen(context: Context) :
         db.close()
     }
 
+    fun getFilterPlans(category: String, level: String): List<Plan> {
+        val db = readableDatabase
+        val plans = mutableListOf<Plan>()
+        val projection = arrayOf("pla_name", "pla_work", "pla_break", "pla_task", "Category.cat_name", "ImportanceLevel.lvl_name")
+
+        var selection: String? = null
+        var selectionArgs: Array<String>? = null
+        if (!category.isEmpty() && level.isEmpty()) {
+            selection = "Category.cat_name = ?"
+            selectionArgs = arrayOf(category)
+        } else if (category.isEmpty() && !level.isEmpty()) {
+            selection = "ImportanceLevel.lvl_name = ?"
+            selectionArgs = arrayOf(level)
+        } else if (!category.isEmpty() && !level.isEmpty()) {
+            selection = "Category.cat_name = ? AND ImportanceLevel.lvl_name = ?"
+            selectionArgs = arrayOf(category, level)
+        }
+
+        val join = "Plan " +
+                "LEFT JOIN Category ON Plan.pla_cat_id = Category.cat_id LEFT JOIN ImportanceLevel ON Plan.pla_lvl_id = ImportanceLevel.lvl_id"
+
+        val cursor = db.query(join, projection, selection, selectionArgs, null, null, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val name = cursor.getColumnIndex("pla_name")
+                val workTime = cursor.getColumnIndex("pla_work")
+                val breakTime = cursor.getColumnIndex("pla_break")
+                val task = cursor.getColumnIndex("pla_task")
+                val catName = cursor.getColumnIndex("cat_name")
+                val lvlName = cursor.getColumnIndex("lvl_name")
+
+                val namePlan = cursor.getString(name)
+                val workPlan = cursor.getLong(workTime)
+                val breakPlan = cursor.getLong(breakTime)
+                val taskPlan = cursor.getInt(task)
+                val catPlan = cursor.getString(catName)
+                val lvlPlan = cursor.getString(lvlName)
+
+                plans.add(Plan(
+                    namePlan,
+                    PomodoroTimer(workPlan, breakPlan, taskPlan),
+                    catPlan,
+                    lvlPlan
+                ))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return plans
+    }
+
     fun reset() {
         val db = writableDatabase
         sqlDropTables.forEach {
