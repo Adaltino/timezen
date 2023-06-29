@@ -41,4 +41,5 @@
     <string name="relatorio_em_grafico">Relatório em gráfico</string>
     <string name="relatorio_em_lista">Relatório em lista</string>
     <string name="dialogue_reset_plan">Tem certeza que quer parar e resetar o temporizador?</string>
+    <string name="text_information_metodo">O Método Pomorodo é um método de gerenciamento de tempo baseado em períodos de 25 minutos (pomodoros) de estudo ou trabalho focado, interrompidos por intervalos de 5 minutos. Após quatro intervalos de estudo consecutivos, são geralmente feitos intervalos mais longos, que podem variar de 15 a 30 minutos. Cada bloco de estudo é chamado de pomodoro, palavra italiana que significa Tomate. A Técnica Pomodoro funciona da seguinte maneira:</string>
 </resources>
