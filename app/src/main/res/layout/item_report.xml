@@ -45,7 +45,7 @@
                         android:id="@+id/text_rpt_plan_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/font_large"
+                        android:textSize="18sp"
                         tools:text="Tempo de Atividade: 1 hora 10 minutos " />
 
                 </LinearLayout>
